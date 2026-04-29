@@ -156,17 +156,11 @@ function parseDiscounts(file) {
 }
 
 function parseAffiliates(file) {
-  const raw = readFileSync(file, 'utf8');
-  const cleaned = raw
-    .split('\n')
-    .map((l) => l.replace(/^\s*\/\/.*$/, ''))
-    .join('\n');
-  const re = /'([^']+)'\s*:\s*\{\s*url\s*:\s*'([^']+)'\s*,\s*dummyCode\s*:\s*'([^']*)'\s*\}/g;
+  const obj = JSON.parse(readFileSync(file, 'utf8'));
   const map = new Map();
-  let m;
-  while ((m = re.exec(cleaned)) !== null) {
-    const key = m[1].trim();
-    map.set(normalizeKey(key), { rawKey: key, url: m[2], dummyCode: m[3] });
+  for (const [key, entry] of Object.entries(obj)) {
+    if (!entry || !entry.url) continue;
+    map.set(normalizeKey(key), { rawKey: key, url: entry.url });
   }
   return map;
 }
