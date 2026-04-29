@@ -7,23 +7,143 @@ const ROOT = __dirname;
 const DIST = join(ROOT, 'dist');
 const PUBLIC = join(ROOT, 'public');
 
-const SITE_URL = (process.env.SITE_URL || 'https://example.com').replace(/\/$/, '');
-const SITE_NAME = process.env.SITE_NAME || 'Kortingsjacht';
-const SITE_TAGLINE = 'Verse kortingscodes voor honderden webshops';
+const SITE_NAME = process.env.SITE_NAME || 'Diski';
+
+// Per-locale public URLs, used for canonical, OG, sitemap, hreflang.
+const SITE_URLS = {
+  nl: (process.env.SITE_URL_NL || 'https://example.com').replace(/\/$/, ''),
+  de: (process.env.SITE_URL_DE || 'https://example.de').replace(/\/$/, ''),
+};
+
+// ---------------------------------------------------------------------------
+// i18n
+// ---------------------------------------------------------------------------
+
+const LOCALES = {
+  nl: {
+    lang: 'nl',
+    tagline: 'Verse kortingscodes voor honderden webshops',
+    homeLead: (n) => `Bespaar bij ${n} webshops met geverifieerde codes — geen gedoe, geen fake kortingen.`,
+    homeMetaDesc: (n) => `Vind actuele kortingscodes voor ${n}+ webshops. Dagelijks bijgewerkt en handmatig gecontroleerd.`,
+    btnAllShops: 'Bekijk alle webshops',
+    sectionFeatured: 'Uitgelichte webshops',
+    sectionAllLink: 'Alles bekijken →',
+    sectionLatest: 'Net binnen',
+    navHome: 'Home',
+    navShops: 'Alle webshops',
+    breadcrumbHome: 'Home',
+    breadcrumbShops: 'Webshops',
+    breadcrumbAria: 'Breadcrumb',
+    alphaAria: 'Alfabetisch',
+    allShopsTitle: (siteName) => `Alle webshops met kortingscodes — ${siteName}`,
+    allShopsH1: 'Alle webshops',
+    allShopsLead: (n) => `${n} webshops met actuele codes. Filter snel of spring naar een letter.`,
+    allShopsMetaDesc: (n) => `Overzicht van ${n} webshops met actuele kortingscodes. Vind direct de juiste shop.`,
+    filterPlaceholder: 'Filter webshops…',
+    shopTitle: (shop, top, siteName) =>
+      `${shop} kortingscode${top ? ` — ${top}${/^\d+$/.test(top) ? '%' : ''} korting` : ''} | ${siteName}`,
+    shopMetaDesc: (n, shop) => `${n} actuele kortingscode${n === 1 ? '' : 's'} voor ${shop}. Dagelijks bijgewerkt en gecontroleerd.`,
+    shopH1: (shop) => `${shop} kortingscode`,
+    shopLead: (n, shop, hasAffiliate) =>
+      `${n} actuele code${n === 1 ? '' : 's'} voor ${shop}.${
+        hasAffiliate
+          ? ' Klik op <em>Toon code</em> om de code te onthullen — de webshop opent automatisch in dit tabblad.'
+          : ''
+      }`,
+    codeAdded: (date, source) => `Toegevoegd ${date}${source ? ` · bron ${source}` : ''}`,
+    discountPercent: (n) => `${n}% korting`,
+    discountAmount: (a) => `${a} korting`,
+    btnReveal: 'Toon code & ga naar shop',
+    btnCopy: 'Kopieer',
+    btnCopied: 'Gekopieerd!',
+    btnAriaCopy: 'Kopieer code',
+    shopMetaH2About: (shop) => `Over ${shop} kortingscodes`,
+    shopMetaAboutBody: (n, shop) =>
+      `Op deze pagina vind je ${n} kortingscode${n === 1 ? '' : 's'} voor ${shop}. We controleren elke dag of de codes nog werken en sorteren op datum, zodat de meest recente bovenaan staat. Niet elke code werkt voor elke bestelling — probeer er meerdere als de eerste niet pakt.`,
+    shopMetaH2How: (shop) => `Hoe gebruik je een ${shop} code?`,
+    shopMetaHowSteps: (shop, hasAffiliate) => [
+      `Kies hierboven een code en${
+        hasAffiliate ? ' klik op <em>Toon code</em>; de webshop opent in dit tabblad.' : ' kopieer de code.'
+      }`,
+      `Vul je winkelmandje bij ${shop}.`,
+      'Plak de code in het kortingsveld bij het afrekenen.',
+    ],
+    footerText: (year, siteName) =>
+      `© ${year} ${siteName}. Codes worden door derden aangedragen; werking niet gegarandeerd.`,
+    cardCount: (n) => `${n} ${n === 1 ? 'code' : 'codes'}`,
+    cardDiscount: (top) => `tot ${top} korting`,
+    badge: 'deal',
+    schemaCodes: 'kortingscodes',
+  },
+  de: {
+    lang: 'de',
+    tagline: 'Frische Rabattcodes für hunderte Onlineshops',
+    homeLead: (n) => `Spare bei ${n} Onlineshops mit geprüften Codes — kein Aufwand, keine Fake-Rabatte.`,
+    homeMetaDesc: (n) => `Finde aktuelle Rabattcodes für ${n}+ Onlineshops. Täglich aktualisiert und handgeprüft.`,
+    btnAllShops: 'Alle Shops ansehen',
+    sectionFeatured: 'Empfohlene Shops',
+    sectionAllLink: 'Alle ansehen →',
+    sectionLatest: 'Neu hinzugefügt',
+    navHome: 'Start',
+    navShops: 'Alle Shops',
+    breadcrumbHome: 'Start',
+    breadcrumbShops: 'Shops',
+    breadcrumbAria: 'Breadcrumb',
+    alphaAria: 'Alphabetisch',
+    allShopsTitle: (siteName) => `Alle Onlineshops mit Rabattcodes — ${siteName}`,
+    allShopsH1: 'Alle Shops',
+    allShopsLead: (n) => `${n} Shops mit aktuellen Codes. Filtere schnell oder springe zu einem Buchstaben.`,
+    allShopsMetaDesc: (n) => `Übersicht über ${n} Onlineshops mit aktuellen Rabattcodes. Finde direkt den richtigen Shop.`,
+    filterPlaceholder: 'Shops filtern…',
+    shopTitle: (shop, top, siteName) =>
+      `${shop} Rabattcode${top ? ` — ${top}${/^\d+$/.test(top) ? '%' : ''} Rabatt` : ''} | ${siteName}`,
+    shopMetaDesc: (n, shop) =>
+      `${n} aktueller Rabattcode${n === 1 ? '' : 's'} für ${shop}. Täglich aktualisiert und geprüft.`,
+    shopH1: (shop) => `${shop} Rabattcode`,
+    shopLead: (n, shop, hasAffiliate) =>
+      `${n} aktueller Code${n === 1 ? '' : 's'} für ${shop}.${
+        hasAffiliate
+          ? ' Klicke auf <em>Code anzeigen</em>, um den Code zu enthüllen — der Shop öffnet automatisch in diesem Tab.'
+          : ''
+      }`,
+    codeAdded: (date, source) => `Hinzugefügt ${date}${source ? ` · Quelle ${source}` : ''}`,
+    discountPercent: (n) => `${n}% Rabatt`,
+    discountAmount: (a) => `${a} Rabatt`,
+    btnReveal: 'Code anzeigen & zum Shop',
+    btnCopy: 'Kopieren',
+    btnCopied: 'Kopiert!',
+    btnAriaCopy: 'Code kopieren',
+    shopMetaH2About: (shop) => `Über ${shop} Rabattcodes`,
+    shopMetaAboutBody: (n, shop) =>
+      `Auf dieser Seite findest du ${n} Rabattcode${n === 1 ? '' : 's'} für ${shop}. Wir prüfen täglich, ob die Codes funktionieren, und sortieren nach Datum, sodass die neuesten oben stehen. Nicht jeder Code funktioniert für jede Bestellung — probiere mehrere aus, falls der erste nicht klappt.`,
+    shopMetaH2How: (shop) => `Wie verwendest du einen ${shop}-Code?`,
+    shopMetaHowSteps: (shop, hasAffiliate) => [
+      `Wähle oben einen Code${
+        hasAffiliate ? ' und klicke auf <em>Code anzeigen</em>; der Shop öffnet in diesem Tab.' : ' und kopiere ihn.'
+      }`,
+      `Fülle deinen Warenkorb bei ${shop}.`,
+      'Füge den Code im Gutscheinfeld an der Kasse ein.',
+    ],
+    footerText: (year, siteName) =>
+      `© ${year} ${siteName}. Codes werden von Dritten beigetragen; Funktion nicht garantiert.`,
+    cardCount: (n) => `${n} ${n === 1 ? 'Code' : 'Codes'}`,
+    cardDiscount: (top) => `bis zu ${top} Rabatt`,
+    badge: 'deal',
+    schemaCodes: 'Rabattcodes',
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Parsers
 // ---------------------------------------------------------------------------
 
-function parseDiscounts() {
-  const raw = JSON.parse(readFileSync(join(ROOT, 'discounts.json'), 'utf8'));
+function parseDiscounts(file) {
+  const raw = JSON.parse(readFileSync(file, 'utf8'));
   const items = [];
   for (const line of raw) {
     if (typeof line !== 'string' || !line.trim()) continue;
     const parts = line.split(',').map((s) => s.trim());
     if (parts.length < 5) continue;
-    // Last four fields are fixed: code, discount, source, date.
-    // Anything before that joins back into the shop name.
     const date = parts.pop();
     const source = parts.pop();
     const discount = parts.pop();
@@ -35,8 +155,8 @@ function parseDiscounts() {
   return items;
 }
 
-function parseAffiliates() {
-  const raw = readFileSync(join(ROOT, 'affiliate-links.json'), 'utf8');
+function parseAffiliates(file) {
+  const raw = readFileSync(file, 'utf8');
   const cleaned = raw
     .split('\n')
     .map((l) => l.replace(/^\s*\/\/.*$/, ''))
@@ -65,34 +185,32 @@ function urlSlug(s) {
 }
 
 function displayName(shop) {
-  // Capitalize first letter of each word, leave parenthetical hints alone.
-  const base = shop
+  return shop
     .replace(/\.nl|\.com|\.it|\.de/gi, (m) => m.toLowerCase())
     .split(' ')
     .map((w) =>
-      w.length > 0 && /^[a-z]/.test(w)
-        ? w.charAt(0).toUpperCase() + w.slice(1)
-        : w
+      w.length > 0 && /^[a-z]/.test(w) ? w.charAt(0).toUpperCase() + w.slice(1) : w
     )
     .join(' ');
-  return base;
 }
-
-// ---------------------------------------------------------------------------
-// Build dataset
-// ---------------------------------------------------------------------------
 
 function parseDateMMDD(s) {
-  // Format used in source: MM-DD (no year). Treat all as current year for sorting.
   const parts = s.split('-').map((n) => parseInt(n, 10));
   if (parts.length !== 2 || parts.some(Number.isNaN)) return 0;
-  const [mm, dd] = parts;
-  return mm * 100 + dd;
+  return parts[0] * 100 + parts[1];
 }
 
-function buildDataset() {
-  const discounts = parseDiscounts();
-  const affiliates = parseAffiliates();
+// ---------------------------------------------------------------------------
+// Dataset
+// ---------------------------------------------------------------------------
+
+function buildDataset(locale) {
+  const dataDir = join(ROOT, 'data', locale);
+  const discountsFile = join(dataDir, 'discounts.json');
+  const affiliateFile = join(dataDir, 'affiliate-links.json');
+
+  const discounts = existsSync(discountsFile) ? parseDiscounts(discountsFile) : [];
+  const affiliates = existsSync(affiliateFile) ? parseAffiliates(affiliateFile) : new Map();
 
   const groups = new Map();
   for (const d of discounts) {
@@ -111,7 +229,6 @@ function buildDataset() {
     groups.get(slug).codes.push(d);
   }
 
-  // Sort codes: most recent first (by MM-DD heuristic), de-dup by code.
   for (const g of groups.values()) {
     const seen = new Set();
     g.codes = g.codes
@@ -125,9 +242,8 @@ function buildDataset() {
     g.latestDate = g.codes[0]?.date || '';
   }
 
-  const shops = [...groups.values()].sort((a, b) =>
-    a.name.localeCompare(b.name, 'nl')
-  );
+  const collator = new Intl.Collator(locale);
+  const shops = [...groups.values()].sort((a, b) => collator.compare(a.name, b.name));
   return { shops, discounts };
 }
 
@@ -144,26 +260,37 @@ function esc(s) {
     .replace(/'/g, '&#39;');
 }
 
-function layout({ title, description, canonical, jsonLd, body, activeNav }) {
-  const ogTitle = title;
-  const ogDesc = description;
+function renderHreflang(pathname) {
+  return Object.entries(SITE_URLS)
+    .map(
+      ([loc, base]) =>
+        `<link rel="alternate" hreflang="${loc}" href="${esc(base + pathname)}">`
+    )
+    .join('\n');
+}
+
+function layout({ ctx, title, description, canonical, jsonLd, body, activeNav, hreflangPath }) {
+  const { t } = ctx;
   const ld = jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : '';
+  const alternates = hreflangPath ? renderHreflang(hreflangPath) : '';
   return `<!DOCTYPE html>
-<html lang="nl">
+<html lang="${t.lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(canonical)}">
+${alternates}
 <meta property="og:type" content="website">
-<meta property="og:title" content="${esc(ogTitle)}">
-<meta property="og:description" content="${esc(ogDesc)}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:site_name" content="${esc(SITE_NAME)}">
+<meta property="og:locale" content="${t.lang === 'de' ? 'de_DE' : 'nl_NL'}">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="${esc(ogTitle)}">
-<meta name="twitter:description" content="${esc(ogDesc)}">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
 <meta name="theme-color" content="#0f172a">
 <link rel="stylesheet" href="/style.css">
 ${ld}
@@ -173,8 +300,8 @@ ${ld}
   <div class="container">
     <a href="/" class="brand"><span class="brand-mark">%</span> ${esc(SITE_NAME)}</a>
     <nav>
-      <a href="/"${activeNav === 'home' ? ' aria-current="page"' : ''}>Home</a>
-      <a href="/shops/"${activeNav === 'shops' ? ' aria-current="page"' : ''}>Alle webshops</a>
+      <a href="/"${activeNav === 'home' ? ' aria-current="page"' : ''}>${esc(t.navHome)}</a>
+      <a href="/shops/"${activeNav === 'shops' ? ' aria-current="page"' : ''}>${esc(t.navShops)}</a>
     </nav>
   </div>
 </header>
@@ -183,7 +310,7 @@ ${body}
 </main>
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; ${new Date().getFullYear()} ${esc(SITE_NAME)}. Codes worden door derden aangedragen; werking niet gegarandeerd.</p>
+    <p>${esc(t.footerText(new Date().getFullYear(), SITE_NAME))}</p>
   </div>
 </footer>
 <script src="/reveal.js" defer></script>
@@ -191,31 +318,34 @@ ${body}
 </html>`;
 }
 
-function shopCard(shop) {
+function shopCard(ctx, shop) {
+  const { t } = ctx;
   const count = shop.codes.length;
   const top = shop.codes[0];
-  const flag = shop.affiliate ? '<span class="badge">deal</span>' : '';
+  const flag = shop.affiliate ? `<span class="badge">${esc(t.badge)}</span>` : '';
+  const meta = `${esc(t.cardCount(count))}${top ? ` · ${esc(t.cardDiscount(top.discount))}` : ''}`;
   return `<a class="card shop-card" href="/shop/${esc(shop.slug)}/">
     <div class="card-row">
       <h3>${esc(shop.name)}</h3>
       ${flag}
     </div>
-    <p class="muted">${count} ${count === 1 ? 'code' : 'codes'}${top ? ` · tot ${esc(top.discount)} korting` : ''}</p>
+    <p class="muted">${meta}</p>
   </a>`;
 }
 
-function discountText(disc) {
+function discountText(t, disc) {
   if (!disc) return '';
   const trimmed = String(disc).trim();
-  if (/^\d+$/.test(trimmed)) return `${trimmed}% korting`;
-  return `${trimmed} korting`;
+  if (/^\d+$/.test(trimmed)) return t.discountPercent(trimmed);
+  return t.discountAmount(trimmed);
 }
 
 // ---------------------------------------------------------------------------
 // Page renderers
 // ---------------------------------------------------------------------------
 
-function renderHome({ shops }) {
+function renderHome(ctx) {
+  const { t, siteUrl, shops } = ctx;
   const featured = [...shops]
     .filter((s) => s.affiliate)
     .sort((a, b) => b.codes.length - a.codes.length)
@@ -226,41 +356,42 @@ function renderHome({ shops }) {
     .sort((a, b) => parseDateMMDD(b.date) - parseDateMMDD(a.date))
     .slice(0, 24);
 
-  const title = `${SITE_NAME} — ${SITE_TAGLINE}`;
-  const description = `Vind actuele kortingscodes voor ${shops.length}+ webshops. Dagelijks bijgewerkt en handmatig gecontroleerd.`;
-  const canonical = `${SITE_URL}/`;
+  const title = `${SITE_NAME} — ${t.tagline}`;
+  const description = t.homeMetaDesc(shops.length);
+  const canonical = `${siteUrl}/`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE_NAME,
-    url: SITE_URL,
+    url: siteUrl,
+    inLanguage: t.lang,
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${SITE_URL}/shops/?q={search_term_string}`,
+      target: `${siteUrl}/shops/?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   };
 
   const body = `
 <section class="hero">
-  <h1>${esc(SITE_TAGLINE)}</h1>
-  <p class="lead">Bespaar bij ${shops.length} webshops met geverifieerde codes — geen gedoe, geen fake kortingen.</p>
-  <p><a class="btn" href="/shops/">Bekijk alle webshops</a></p>
+  <h1>${esc(t.tagline)}</h1>
+  <p class="lead">${esc(t.homeLead(shops.length))}</p>
+  <p><a class="btn" href="/shops/">${esc(t.btnAllShops)}</a></p>
 </section>
 
 <section>
   <div class="section-head">
-    <h2>Uitgelichte webshops</h2>
-    <a class="muted" href="/shops/">Alles bekijken →</a>
+    <h2>${esc(t.sectionFeatured)}</h2>
+    <a class="muted" href="/shops/">${esc(t.sectionAllLink)}</a>
   </div>
   <div class="grid">
-    ${featured.map(shopCard).join('\n')}
+    ${featured.map((s) => shopCard(ctx, s)).join('\n')}
   </div>
 </section>
 
 <section>
-  <h2>Net binnen</h2>
+  <h2>${esc(t.sectionLatest)}</h2>
   <ul class="latest-list">
     ${latest
       .map(
@@ -268,7 +399,7 @@ function renderHome({ shops }) {
       <li>
         <a href="/shop/${esc(c.shopSlug)}/">
           <strong>${esc(c.shopName)}</strong>
-          <span class="muted"> · ${esc(discountText(c.discount))}</span>
+          <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
         </a>
         <span class="date">${esc(c.date)}</span>
       </li>`
@@ -278,28 +409,32 @@ function renderHome({ shops }) {
 </section>
 `;
 
-  return layout({ title, description, canonical, jsonLd, body, activeNav: 'home' });
+  return layout({
+    ctx, title, description, canonical, jsonLd, body,
+    activeNav: 'home', hreflangPath: '/',
+  });
 }
 
-function renderAllShops({ shops }) {
-  const title = `Alle webshops met kortingscodes — ${SITE_NAME}`;
-  const description = `Overzicht van ${shops.length} webshops met actuele kortingscodes. Vind direct de juiste shop.`;
-  const canonical = `${SITE_URL}/shops/`;
+function renderAllShops(ctx) {
+  const { t, siteUrl, shops } = ctx;
+  const title = t.allShopsTitle(SITE_NAME);
+  const description = t.allShopsMetaDesc(shops.length);
+  const canonical = `${siteUrl}/shops/`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: 'Webshops',
+    name: t.allShopsH1,
+    inLanguage: t.lang,
     numberOfItems: shops.length,
     itemListElement: shops.slice(0, 200).map((s, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      url: `${SITE_URL}/shop/${s.slug}/`,
+      url: `${siteUrl}/shop/${s.slug}/`,
       name: s.name,
     })),
   };
 
-  // Group by first letter for a nice index.
   const byLetter = new Map();
   for (const s of shops) {
     const ch = (s.name[0] || '#').toUpperCase();
@@ -311,12 +446,12 @@ function renderAllShops({ shops }) {
 
   const body = `
 <section class="hero compact">
-  <h1>Alle webshops</h1>
-  <p class="lead">${shops.length} webshops met actuele codes. Filter snel of spring naar een letter.</p>
-  <input type="search" id="shop-filter" placeholder="Filter webshops…" aria-label="Filter webshops">
+  <h1>${esc(t.allShopsH1)}</h1>
+  <p class="lead">${esc(t.allShopsLead(shops.length))}</p>
+  <input type="search" id="shop-filter" placeholder="${esc(t.filterPlaceholder)}" aria-label="${esc(t.filterPlaceholder)}">
 </section>
 
-<nav class="alpha-index" aria-label="Alfabetisch">
+<nav class="alpha-index" aria-label="${esc(t.alphaAria)}">
   ${letters.map((l) => `<a href="#l-${esc(l)}">${esc(l)}</a>`).join('')}
 </nav>
 
@@ -326,33 +461,38 @@ ${letters
 <section class="letter-block" id="l-${esc(l)}">
   <h2>${esc(l)}</h2>
   <div class="grid">
-    ${byLetter.get(l).map(shopCard).join('\n')}
+    ${byLetter.get(l).map((s) => shopCard(ctx, s)).join('\n')}
   </div>
 </section>`
   )
   .join('\n')}
 `;
 
-  return layout({ title, description, canonical, jsonLd, body, activeNav: 'shops' });
+  return layout({
+    ctx, title, description, canonical, jsonLd, body,
+    activeNav: 'shops', hreflangPath: '/shops/',
+  });
 }
 
-function renderShop(shop) {
+function renderShop(ctx, shop) {
+  const { t, siteUrl } = ctx;
   const codeCount = shop.codes.length;
   const topDiscount = shop.codes[0]?.discount || '';
-  const title = `${shop.name} kortingscode${topDiscount ? ` — ${topDiscount}${/^\d+$/.test(topDiscount) ? '%' : ''} korting` : ''} | ${SITE_NAME}`;
-  const description = `${codeCount} actuele kortingscode${codeCount === 1 ? '' : 's'} voor ${shop.name}. Dagelijks bijgewerkt en gecontroleerd.`;
-  const canonical = `${SITE_URL}/shop/${shop.slug}/`;
+  const title = t.shopTitle(shop.name, topDiscount, SITE_NAME);
+  const description = t.shopMetaDesc(codeCount, shop.name);
+  const canonical = `${siteUrl}/shop/${shop.slug}/`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `${shop.name} kortingscodes`,
+    name: `${shop.name} ${t.schemaCodes}`,
+    inLanguage: t.lang,
     itemListElement: shop.codes.map((c, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       item: {
         '@type': 'Offer',
-        name: `${shop.name} ${discountText(c.discount)}`,
+        name: `${shop.name} ${discountText(t, c.discount)}`,
         url: canonical,
         availability: 'https://schema.org/InStock',
         seller: { '@type': 'Organization', name: shop.name },
@@ -364,8 +504,8 @@ function renderShop(shop) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: SITE_NAME, item: `${SITE_URL}/` },
-      { '@type': 'ListItem', position: 2, name: 'Webshops', item: `${SITE_URL}/shops/` },
+      { '@type': 'ListItem', position: 1, name: SITE_NAME, item: `${siteUrl}/` },
+      { '@type': 'ListItem', position: 2, name: t.breadcrumbShops, item: `${siteUrl}/shops/` },
       { '@type': 'ListItem', position: 3, name: shop.name, item: canonical },
     ],
   };
@@ -379,17 +519,17 @@ function renderShop(shop) {
       return `
 <article class="code${reveal ? ' is-revealed' : ''}" data-index="${i}">
   <div class="code-info">
-    <h3>${esc(discountText(c.discount))}</h3>
-    <p class="muted">Toegevoegd ${esc(c.date)}${c.source ? ` · bron ${esc(c.source)}` : ''}</p>
+    <h3>${esc(discountText(t, c.discount))}</h3>
+    <p class="muted">${esc(t.codeAdded(c.date, c.source))}</p>
   </div>
   <div class="code-action">
     <div class="code-value" data-code="${esc(c.code)}">
       <span class="code-text">${esc(c.code)}</span>
-      <button type="button" class="copy-btn" aria-label="Kopieer code">Kopieer</button>
+      <button type="button" class="copy-btn" aria-label="${esc(t.btnAriaCopy)}" data-copied="${esc(t.btnCopied)}">${esc(t.btnCopy)}</button>
     </div>
     ${
       hasAffiliate
-        ? `<button type="button" class="reveal-btn" data-affiliate="${esc(affiliateUrl)}" data-index="${i}">Toon code &amp; ga naar shop</button>`
+        ? `<button type="button" class="reveal-btn" data-affiliate="${esc(affiliateUrl)}" data-index="${i}">${esc(t.btnReveal)}</button>`
         : ''
     }
   </div>
@@ -397,20 +537,18 @@ function renderShop(shop) {
     })
     .join('\n');
 
+  const howSteps = t.shopMetaHowSteps(shop.name, hasAffiliate);
+
   const body = `
-<nav class="breadcrumb" aria-label="Breadcrumb">
-  <a href="/">Home</a> <span>›</span>
-  <a href="/shops/">Webshops</a> <span>›</span>
+<nav class="breadcrumb" aria-label="${esc(t.breadcrumbAria)}">
+  <a href="/">${esc(t.breadcrumbHome)}</a> <span>›</span>
+  <a href="/shops/">${esc(t.breadcrumbShops)}</a> <span>›</span>
   <span aria-current="page">${esc(shop.name)}</span>
 </nav>
 
 <header class="shop-hero">
-  <h1>${esc(shop.name)} kortingscode</h1>
-  <p class="lead">${codeCount} actuele code${codeCount === 1 ? '' : 's'} voor ${esc(shop.name)}.${
-    hasAffiliate
-      ? ' Klik op <em>Toon code</em> om de code te onthullen — de webshop opent automatisch in dit tabblad.'
-      : ''
-  }</p>
+  <h1>${esc(t.shopH1(shop.name))}</h1>
+  <p class="lead">${t.shopLead(codeCount, esc(shop.name), hasAffiliate)}</p>
 </header>
 
 <section class="codes" data-has-affiliate="${hasAffiliate}">
@@ -418,24 +556,19 @@ function renderShop(shop) {
 </section>
 
 <section class="shop-meta">
-  <h2>Over ${esc(shop.name)} kortingscodes</h2>
-  <p>Op deze pagina vind je ${codeCount} kortingscode${codeCount === 1 ? '' : 's'} voor ${esc(shop.name)}. We controleren elke dag of de codes nog werken en sorteren op datum, zodat de meest recente bovenaan staat. Niet elke code werkt voor elke bestelling — probeer er meerdere als de eerste niet pakt.</p>
-  <h2>Hoe gebruik je een ${esc(shop.name)} code?</h2>
+  <h2>${esc(t.shopMetaH2About(shop.name))}</h2>
+  <p>${esc(t.shopMetaAboutBody(codeCount, shop.name))}</p>
+  <h2>${esc(t.shopMetaH2How(shop.name))}</h2>
   <ol>
-    <li>Kies hierboven een code en${hasAffiliate ? ' klik op <em>Toon code</em>; de webshop opent in dit tabblad.' : ' kopieer de code.'}</li>
-    <li>Vul je winkelmandje bij ${esc(shop.name)}.</li>
-    <li>Plak de code in het kortingsveld bij het afrekenen.</li>
+    ${howSteps.map((step) => `<li>${step}</li>`).join('\n')}
   </ol>
 </section>
 `;
 
   return layout({
-    title,
-    description,
-    canonical,
+    ctx, title, description, canonical,
     jsonLd: [jsonLd, breadcrumb],
-    body,
-    activeNav: 'shops',
+    body, activeNav: 'shops',
   });
 }
 
@@ -443,17 +576,17 @@ function renderShop(shop) {
 // Build
 // ---------------------------------------------------------------------------
 
-function writePage(relPath, html) {
-  const out = join(DIST, relPath);
+function writePage(distDir, relPath, html) {
+  const out = join(distDir, relPath);
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, html);
 }
 
-function buildSitemap(shops) {
+function buildSitemap(distDir, siteUrl, shops) {
   const urls = [
-    `${SITE_URL}/`,
-    `${SITE_URL}/shops/`,
-    ...shops.map((s) => `${SITE_URL}/shop/${s.slug}/`),
+    `${siteUrl}/`,
+    `${siteUrl}/shops/`,
+    ...shops.map((s) => `${siteUrl}/shop/${s.slug}/`),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -466,39 +599,49 @@ ${urls
   )
   .join('\n')}
 </urlset>`;
-  writeFileSync(join(DIST, 'sitemap.xml'), xml);
+  writeFileSync(join(distDir, 'sitemap.xml'), xml);
 }
 
-function buildRobots() {
+function buildRobots(distDir, siteUrl) {
   const txt = `User-agent: *
 Allow: /
 
-Sitemap: ${SITE_URL}/sitemap.xml
+Sitemap: ${siteUrl}/sitemap.xml
 `;
-  writeFileSync(join(DIST, 'robots.txt'), txt);
+  writeFileSync(join(distDir, 'robots.txt'), txt);
+}
+
+function buildLocale(locale) {
+  if (!LOCALES[locale]) throw new Error(`Unknown locale: ${locale}`);
+  const t = LOCALES[locale];
+  const siteUrl = SITE_URLS[locale];
+  const distDir = join(DIST, locale);
+
+  if (existsSync(distDir)) rmSync(distDir, { recursive: true });
+  mkdirSync(distDir, { recursive: true });
+  if (existsSync(PUBLIC)) cpSync(PUBLIC, distDir, { recursive: true });
+
+  const dataset = buildDataset(locale);
+  const ctx = { locale, t, siteUrl, shops: dataset.shops };
+
+  writePage(distDir, 'index.html', renderHome(ctx));
+  writePage(distDir, 'shops/index.html', renderAllShops(ctx));
+  for (const shop of dataset.shops) {
+    writePage(distDir, `shop/${shop.slug}/index.html`, renderShop(ctx, shop));
+  }
+
+  buildSitemap(distDir, siteUrl, dataset.shops);
+  buildRobots(distDir, siteUrl);
+
+  console.log(
+    `[${locale}] ${dataset.shops.length} shops, ${dataset.discounts.length} codes → ${distDir}`
+  );
 }
 
 function main() {
-  if (existsSync(DIST)) rmSync(DIST, { recursive: true });
-  mkdirSync(DIST, { recursive: true });
-
-  if (existsSync(PUBLIC)) {
-    cpSync(PUBLIC, DIST, { recursive: true });
-  }
-
-  const dataset = buildDataset();
-  console.log(`Parsed ${dataset.shops.length} shops, ${dataset.discounts.length} codes`);
-
-  writePage('index.html', renderHome(dataset));
-  writePage('shops/index.html', renderAllShops(dataset));
-  for (const shop of dataset.shops) {
-    writePage(`shop/${shop.slug}/index.html`, renderShop(shop));
-  }
-
-  buildSitemap(dataset.shops);
-  buildRobots();
-
-  console.log(`Built site at ${DIST}`);
+  const requested = process.env.LOCALE;
+  const locales = requested ? [requested] : Object.keys(LOCALES);
+  for (const loc of locales) buildLocale(loc);
 }
 
 main();

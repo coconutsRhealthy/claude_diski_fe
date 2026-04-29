@@ -2,7 +2,8 @@ import { createServer } from 'node:http';
 import { readFileSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 
-const ROOT = new URL('./dist/', import.meta.url).pathname;
+const LOCALE = process.env.LOCALE || 'nl';
+const ROOT = new URL(`./dist/${LOCALE}/`, import.meta.url).pathname;
 const PORT = process.env.PORT || 4321;
 
 const TYPES = {
@@ -30,4 +31,4 @@ createServer((req, res) => {
     res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end('<h1>404</h1>');
   }
-}).listen(PORT, () => console.log(`Preview at http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Preview [${LOCALE}] at http://localhost:${PORT}`));

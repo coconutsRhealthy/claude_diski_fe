@@ -1,7 +1,5 @@
 (function () {
   // ---- Affiliate reveal flow ------------------------------------------------
-  // Click "Toon code": open this same page in a new tab with ?reveal=<index>,
-  // then redirect the current tab to the affiliate URL.
   const params = new URLSearchParams(window.location.search);
   const revealParam = params.get('reveal');
   if (revealParam !== null) {
@@ -34,9 +32,10 @@
       const wrap = btn.closest('.code-value');
       const code = wrap && wrap.getAttribute('data-code');
       if (!code) return;
+      const copiedLabel = btn.getAttribute('data-copied') || 'Copied!';
       const done = () => {
         const orig = btn.textContent;
-        btn.textContent = 'Gekopieerd!';
+        btn.textContent = copiedLabel;
         setTimeout(() => { btn.textContent = orig; }, 1400);
       };
       if (navigator.clipboard && window.isSecureContext) {
