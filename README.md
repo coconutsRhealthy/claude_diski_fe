@@ -10,17 +10,30 @@ Two locales ship today: **NL** (Dutch market) and **DE** (German market). Each b
 data/
   nl/
     discounts.json
-    affiliate-links.json
+    shops.json           ← per-shop metadata (logo, affiliate URL)
   de/
     discounts.json
-    affiliate-links.json
-public/                ← shared static assets (style.css, reveal.js)
-build.mjs              ← generator (zero deps)
-serve.mjs              ← local preview
+    shops.json
+public/                  ← shared static assets (style.css, reveal.js)
+build.mjs                ← generator (zero deps)
+serve.mjs                ← local preview
 dist/
-  nl/                  ← built NL site
-  de/                  ← built DE site
+  nl/                    ← built NL site
+  de/                    ← built DE site
 ```
+
+### shops.json schema
+
+```json
+{
+  "hunkemoller": {
+    "logo": "https://...png",     // optional — falls back to a letter placeholder
+    "url":  "https://tidd.ly/..." // optional — affiliate URL; if missing, codes are shown unblurred
+  }
+}
+```
+
+Both fields are optional. A shop entry can have just `logo`, just `url`, or both.
 
 ## Local
 
@@ -68,7 +81,7 @@ That's it — no framework, no `npm install`.
 
 ## Adding codes / shops
 
-Edit the relevant locale's `data/<locale>/discounts.json` (one CSV-style line per code: `"shop, code, discount, source, MM-DD"`) and `data/<locale>/affiliate-links.json` (JS-object literal). Rebuild — that's the whole flow.
+Edit the relevant locale's `data/<locale>/discounts.json` (one CSV-style line per code: `"shop, code, discount, source, MM-DD"`) and/or `data/<locale>/shops.json` (logo + affiliate URL). Rebuild — that's the whole flow.
 
 ## How the affiliate reveal flow works
 

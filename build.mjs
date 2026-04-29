@@ -153,12 +153,16 @@ function parseDiscounts(file) {
   return items;
 }
 
-function parseAffiliates(file) {
+function parseShops(file) {
   const obj = JSON.parse(readFileSync(file, 'utf8'));
   const map = new Map();
   for (const [key, entry] of Object.entries(obj)) {
-    if (!entry || !entry.url) continue;
-    map.set(normalizeKey(key), { rawKey: key, url: entry.url });
+    if (!entry || typeof entry !== 'object') continue;
+    map.set(normalizeKey(key), {
+      rawKey: key,
+      url: entry.url || null,
+      logo: entry.logo || null,
+    });
   }
   return map;
 }
@@ -216,10 +220,10 @@ function formatDiscountValue(disc) {
 function buildDataset(locale) {
   const dataDir = join(ROOT, 'data', locale);
   const discountsFile = join(dataDir, 'discounts.json');
-  const affiliateFile = join(dataDir, 'affiliate-links.json');
+  const shopsFile = join(dataDir, 'shops.json');
 
   const discounts = existsSync(discountsFile) ? parseDiscounts(discountsFile) : [];
-  const affiliates = existsSync(affiliateFile) ? parseAffiliates(affiliateFile) : new Map();
+  const shopMeta = existsSync(shopsFile) ? parseShops(shopsFile) : new Map();
 
   const groups = new Map();
   for (const d of discounts) {
@@ -227,12 +231,14 @@ function buildDataset(locale) {
     const slug = urlSlug(baseShop);
     if (!slug) continue;
     if (!groups.has(slug)) {
+      const meta = shopMeta.get(normalizeKey(baseShop)) || null;
       groups.set(slug, {
         slug,
         name: displayName(baseShop),
         rawName: baseShop,
         codes: [],
-        affiliate: affiliates.get(normalizeKey(baseShop)) || null,
+        affiliate: meta?.url ? { url: meta.url } : null,
+        logo: meta?.logo || null,
       });
     }
     groups.get(slug).codes.push(d);
@@ -254,14 +260,20 @@ function buildDataset(locale) {
   const collator = new Intl.Collator(locale);
   const shops = [...groups.values()].sort((a, b) => collator.compare(a.name, b.name));
 
-  // Re-emit raw discounts with shop slug/name attached, preserving JSON file
-  // order — used by the homepage "latest" section.
+  // Re-emit raw discounts with shop slug/name/logo attached, preserving JSON
+  // file order — used by the homepage "latest" section.
   const enrichedDiscounts = discounts
     .map((d) => {
       const baseShop = d.shop.replace(/\s*\([^)]*\)\s*$/, '').trim();
       const slug = urlSlug(baseShop);
       if (!slug) return null;
-      return { ...d, shopSlug: slug, shopName: displayName(baseShop) };
+      const group = groups.get(slug);
+      return {
+        ...d,
+        shopSlug: slug,
+        shopName: displayName(baseShop),
+        shopLogo: group?.logo || null,
+      };
     })
     .filter(Boolean);
 
@@ -339,6 +351,20 @@ ${body}
 </html>`;
 }
 
+function logoHtml(item, size) {
+  // `item` may be a shop ({ logo, name }) or an enriched discount
+  // ({ shopLogo, shopName }). Render an <img> when a logo URL exists,
+  // otherwise a neutral placeholder showing the first letter of the name.
+  const logo = item.logo || item.shopLogo || null;
+  const name = item.name || item.shopName || '?';
+  const cls = `shop-logo shop-logo--${size}`;
+  if (logo) {
+    return `<img class="${cls}" src="${esc(logo)}" alt="" loading="lazy" decoding="async">`;
+  }
+  const initial = (name.charAt(0) || '?').toUpperCase();
+  return `<span class="${cls} shop-logo--placeholder" aria-hidden="true">${esc(initial)}</span>`;
+}
+
 function shopCard(ctx, shop) {
   const { t } = ctx;
   const count = shop.codes.length;
@@ -346,11 +372,14 @@ function shopCard(ctx, shop) {
   const flag = shop.affiliate ? `<span class="badge">${esc(t.badge)}</span>` : '';
   const meta = `${esc(t.cardCount(count))}${top ? ` · ${esc(t.cardDiscount(formatDiscountValue(top.discount)))}` : ''}`;
   return `<a class="card shop-card" href="/shop/${esc(shop.slug)}/">
-    <div class="card-row">
-      <h3>${esc(shop.name)}</h3>
-      ${flag}
+    ${logoHtml(shop, 'md')}
+    <div class="shop-card-body">
+      <div class="card-row">
+        <h3>${esc(shop.name)}</h3>
+        ${flag}
+      </div>
+      <p class="muted">${meta}</p>
     </div>
-    <p class="muted">${meta}</p>
   </a>`;
 }
 
@@ -419,8 +448,11 @@ function renderHome(ctx) {
         (c) => `
       <li>
         <a href="/shop/${esc(c.shopSlug)}/">
-          <strong>${esc(c.shopName)}</strong>
-          <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
+          ${logoHtml(c, 'sm')}
+          <span class="latest-text">
+            <strong>${esc(c.shopName)}</strong>
+            <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
+          </span>
         </a>
         <span class="date">${esc(formatDate(c.date, locale))}</span>
       </li>`
@@ -568,8 +600,11 @@ function renderShop(ctx, shop) {
 </nav>
 
 <header class="shop-hero">
-  <h1>${esc(t.shopH1(shop.name))}</h1>
-  <p class="lead">${t.shopLead(codeCount, esc(shop.name), hasAffiliate)}</p>
+  ${logoHtml(shop, 'lg')}
+  <div>
+    <h1>${esc(t.shopH1(shop.name))}</h1>
+    <p class="lead">${t.shopLead(codeCount, esc(shop.name), hasAffiliate)}</p>
+  </div>
 </header>
 
 <section class="codes" data-has-affiliate="${hasAffiliate}">

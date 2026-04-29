@@ -125,10 +125,34 @@ h3 { font-size: 16px; margin: 0 0 4px; }
   background: var(--surface);
 }
 
+/* Logos */
+.shop-logo {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.shop-logo--sm { width: 32px; height: 32px; padding: 3px; border-radius: 8px; }
+.shop-logo--md { width: 44px; height: 44px; padding: 4px; }
+.shop-logo--lg { width: 64px; height: 64px; padding: 6px; }
+.shop-logo--placeholder {
+  display: inline-grid;
+  place-items: center;
+  background: #f1f5f9;
+  color: var(--ink-soft);
+  font-weight: 700;
+  border-style: dashed;
+}
+.shop-logo--sm.shop-logo--placeholder { font-size: 14px; }
+.shop-logo--md.shop-logo--placeholder { font-size: 18px; }
+.shop-logo--lg.shop-logo--placeholder { font-size: 26px; }
+
 /* Grid of shop cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 14px;
 }
 .card {
@@ -142,7 +166,14 @@ h3 { font-size: 16px; margin: 0 0 4px; }
 }
 .card:hover { transform: translateY(-1px); border-color: #cbd5e1; text-decoration: none; }
 .card-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.shop-card { display: flex; align-items: center; gap: 12px; }
+.shop-card-body { flex: 1; min-width: 0; }
 .shop-card h3 { font-size: 15px; }
+.shop-card-body .card-row h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .badge {
   font-size: 11px;
@@ -169,11 +200,29 @@ h3 { font-size: 16px; margin: 0 0 4px; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--line);
 }
 .latest-list li:last-child { border-bottom: 0; }
-.latest-list .date { color: var(--ink-soft); font-size: 14px; }
+.latest-list li > a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.latest-list .latest-text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.latest-list .date {
+  color: var(--ink-soft);
+  font-size: 14px;
+  flex-shrink: 0;
+  padding-left: 12px;
+}
 
 /* Alphabetical index */
 .alpha-index {
@@ -208,8 +257,16 @@ h3 { font-size: 16px; margin: 0 0 4px; }
 .breadcrumb span { margin: 0 6px; }
 
 /* Shop detail */
-.shop-hero { margin-top: 8px; margin-bottom: 24px; }
+.shop-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
 .shop-hero em { color: var(--ink); font-style: normal; font-weight: 600; }
+.shop-hero h1 { margin-bottom: 4px; }
+.shop-hero .lead { margin-top: 0; }
 
 .codes { display: flex; flex-direction: column; gap: 12px; }
 
