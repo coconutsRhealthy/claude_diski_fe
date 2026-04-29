@@ -7,11 +7,11 @@ Two locales ship today: **NL** (Dutch market) and **DE** (German market). Each b
 ## Project layout
 
 ```
+click_events.tsv         ← optional, shared: drives popularity ranking on home
 data/
   nl/
     discounts.json
     shops.json           ← per-shop metadata (logo, affiliate URL)
-    click_events.tsv     ← optional: drives popularity ranking on home
   de/
     discounts.json
     shops.json
@@ -25,7 +25,7 @@ dist/
 
 ### click_events.tsv (optional)
 
-If `data/<locale>/click_events.tsv` exists, the build uses it to rank shops on the homepage:
+The build looks for `data/<locale>/click_events.tsv` first, then falls back to a shared `click_events.tsv` at the project root. When found, the build uses it to rank shops on the homepage:
 
 - **Featured section** — top 12 shops by click popularity
 - **Latest section** — next 24 popular shops, each with their most recent code
