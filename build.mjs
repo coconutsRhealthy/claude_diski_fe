@@ -50,9 +50,8 @@ const LOCALES = {
           ? ' Klik op <em>Toon code</em> om de code te onthullen — de webshop opent automatisch in dit tabblad.'
           : ''
       }`,
-    codeAdded: (date, source) => `Toegevoegd ${date}${source ? ` · bron ${source}` : ''}`,
-    discountPercent: (n) => `${n}% korting`,
-    discountAmount: (a) => `${a} korting`,
+    codeAdded: (date) => `Toegevoegd ${date}`,
+    discountSuffix: 'korting',
     btnReveal: 'Toon code & ga naar shop',
     btnCopy: 'Kopieer',
     btnCopied: 'Gekopieerd!',
@@ -106,9 +105,8 @@ const LOCALES = {
           ? ' Klicke auf <em>Code anzeigen</em>, um den Code zu enthüllen — der Shop öffnet automatisch in diesem Tab.'
           : ''
       }`,
-    codeAdded: (date, source) => `Hinzugefügt ${date}${source ? ` · Quelle ${source}` : ''}`,
-    discountPercent: (n) => `${n}% Rabatt`,
-    discountAmount: (a) => `${a} Rabatt`,
+    codeAdded: (date) => `Hinzugefügt ${date}`,
+    discountSuffix: 'Rabatt',
     btnReveal: 'Code anzeigen & zum Shop',
     btnCopy: 'Kopieren',
     btnCopied: 'Kopiert!',
@@ -194,6 +192,23 @@ function parseDateMMDD(s) {
   return parts[0] * 100 + parts[1];
 }
 
+function formatDate(mmdd, locale) {
+  const parts = mmdd.split('-').map((n) => parseInt(n, 10));
+  if (parts.length !== 2 || parts.some(Number.isNaN)) return mmdd;
+  const [mm, dd] = parts;
+  const d = new Date(2000, mm - 1, dd);
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long' }).format(d);
+}
+
+// Append "%" to bare numeric discounts ("15" → "15%"); leave anything containing
+// "€" or "%" alone, and leave non-numeric values ("60+10", "3F2+15") untouched.
+function formatDiscountValue(disc) {
+  const s = String(disc || '').trim();
+  if (!s) return '';
+  if (/^\d+$/.test(s)) return `${s}%`;
+  return s;
+}
+
 // ---------------------------------------------------------------------------
 // Dataset
 // ---------------------------------------------------------------------------
@@ -238,7 +253,19 @@ function buildDataset(locale) {
 
   const collator = new Intl.Collator(locale);
   const shops = [...groups.values()].sort((a, b) => collator.compare(a.name, b.name));
-  return { shops, discounts };
+
+  // Re-emit raw discounts with shop slug/name attached, preserving JSON file
+  // order — used by the homepage "latest" section.
+  const enrichedDiscounts = discounts
+    .map((d) => {
+      const baseShop = d.shop.replace(/\s*\([^)]*\)\s*$/, '').trim();
+      const slug = urlSlug(baseShop);
+      if (!slug) return null;
+      return { ...d, shopSlug: slug, shopName: displayName(baseShop) };
+    })
+    .filter(Boolean);
+
+  return { shops, discounts: enrichedDiscounts };
 }
 
 // ---------------------------------------------------------------------------
@@ -317,7 +344,7 @@ function shopCard(ctx, shop) {
   const count = shop.codes.length;
   const top = shop.codes[0];
   const flag = shop.affiliate ? `<span class="badge">${esc(t.badge)}</span>` : '';
-  const meta = `${esc(t.cardCount(count))}${top ? ` · ${esc(t.cardDiscount(top.discount))}` : ''}`;
+  const meta = `${esc(t.cardCount(count))}${top ? ` · ${esc(t.cardDiscount(formatDiscountValue(top.discount)))}` : ''}`;
   return `<a class="card shop-card" href="/shop/${esc(shop.slug)}/">
     <div class="card-row">
       <h3>${esc(shop.name)}</h3>
@@ -328,10 +355,8 @@ function shopCard(ctx, shop) {
 }
 
 function discountText(t, disc) {
-  if (!disc) return '';
-  const trimmed = String(disc).trim();
-  if (/^\d+$/.test(trimmed)) return t.discountPercent(trimmed);
-  return t.discountAmount(trimmed);
+  const v = formatDiscountValue(disc);
+  return v ? `${v} ${t.discountSuffix}` : '';
 }
 
 // ---------------------------------------------------------------------------
@@ -339,15 +364,17 @@ function discountText(t, disc) {
 // ---------------------------------------------------------------------------
 
 function renderHome(ctx) {
-  const { t, siteUrl, shops } = ctx;
+  const { t, siteUrl, shops, discounts, locale } = ctx;
   const featured = [...shops]
     .filter((s) => s.affiliate)
     .sort((a, b) => b.codes.length - a.codes.length)
     .slice(0, 12);
 
-  const latest = shops
-    .flatMap((s) => s.codes.map((c) => ({ ...c, shopSlug: s.slug, shopName: s.name })))
-    .sort((a, b) => parseDateMMDD(b.date) - parseDateMMDD(a.date))
+  // Codes from the most recent day, in original JSON order (top of file first).
+  const dates = discounts.map((d) => parseDateMMDD(d.date)).filter((n) => n > 0);
+  const maxDate = dates.length ? Math.max(...dates) : 0;
+  const latest = discounts
+    .filter((d) => parseDateMMDD(d.date) === maxDate)
     .slice(0, 24);
 
   const title = `${SITE_NAME} — ${t.tagline}`;
@@ -395,7 +422,7 @@ function renderHome(ctx) {
           <strong>${esc(c.shopName)}</strong>
           <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
         </a>
-        <span class="date">${esc(c.date)}</span>
+        <span class="date">${esc(formatDate(c.date, locale))}</span>
       </li>`
       )
       .join('\n')}
@@ -514,7 +541,7 @@ function renderShop(ctx, shop) {
 <article class="code${reveal ? ' is-revealed' : ''}" data-index="${i}">
   <div class="code-info">
     <h3>${esc(discountText(t, c.discount))}</h3>
-    <p class="muted">${esc(t.codeAdded(c.date, c.source))}</p>
+    <p class="muted">${esc(t.codeAdded(formatDate(c.date, ctx.locale)))}</p>
   </div>
   <div class="code-action">
     <div class="code-value" data-code="${esc(c.code)}">
@@ -616,7 +643,7 @@ function buildLocale(locale) {
   if (existsSync(PUBLIC)) cpSync(PUBLIC, distDir, { recursive: true });
 
   const dataset = buildDataset(locale);
-  const ctx = { locale, t, siteUrl, shops: dataset.shops };
+  const ctx = { locale, t, siteUrl, shops: dataset.shops, discounts: dataset.discounts };
 
   writePage(distDir, 'index.html', renderHome(ctx));
   writePage(distDir, 'shops/index.html', renderAllShops(ctx));
