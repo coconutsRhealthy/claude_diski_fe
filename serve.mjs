@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { readFileSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 
-const LOCALE = process.env.LOCALE || 'nl';
+const LOCALE = process.env.LOCALE || 'be';
 const ROOT = new URL(`./dist/${LOCALE}/`, import.meta.url).pathname;
 const PORT = process.env.PORT || 4321;
 

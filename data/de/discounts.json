@@ -1,1 +1,215 @@
-[]
+{
+  "generated_at": "2026-04-30T04:05:25+00:00",
+  "discount_codes": [
+    {
+      "company_id": "aboutyou",
+      "company": "About You",
+      "code": "CASSYV15",
+      "discount": "15%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "berlook",
+      "company": "BerLook",
+      "code": "JMBR15",
+      "discount": "15%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "NIKA",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "currentbody",
+      "company": "Current Body",
+      "code": "FRANCESCB",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "degustabox",
+      "company": "Degustabox",
+      "code": "3JRRK",
+      "discount": "€9.99",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "annadenell",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "Fitmitkev",
+      "discount": "Up to 25%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "LAT",
+      "discount": null,
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "SOMMER",
+      "discount": null,
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "SUPPLIGATOR",
+      "discount": "20-25%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "VICCES",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "fitjeans",
+      "company": "Fit Jeans",
+      "code": "CELINE10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "ginatricot",
+      "company": "Gina Tricot",
+      "code": "AMELIE15",
+      "discount": "15%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "grfenhof",
+      "company": "Gräfenhof",
+      "code": "Wunderland12",
+      "discount": null,
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "DPERSY10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "LAT10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "halara",
+      "company": "Halara",
+      "code": "paulina2602",
+      "discount": "5-10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "holysquad",
+      "company": "Holy Squad",
+      "code": "TATJANA10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "jeulia",
+      "company": "Jeulia",
+      "code": "BJKL15",
+      "discount": "15%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "journi",
+      "company": "Journi",
+      "code": "ROSE20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "luamaya",
+      "company": "Lua Maya",
+      "code": "Celina30",
+      "discount": "30%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "luamaya",
+      "company": "Lua Maya",
+      "code": "Sparmaus30",
+      "discount": "30%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "mainpunkt",
+      "company": "Mainpunkt",
+      "code": "M40",
+      "discount": "40%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "WUNDERLAND25",
+      "discount": "Free jar",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "mybraineffect",
+      "company": "Mybraineffect",
+      "code": "LOVESTYLE",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "mybraineffect",
+      "company": "Mybraineffect",
+      "code": "PUSCHINELLA",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "oatsome",
+      "company": "Oatsome",
+      "code": "STEPHI",
+      "discount": "Up to 20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "phlaslab",
+      "company": "Phlas Lab",
+      "code": "LISSI10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "prozis",
+      "company": "Prozis",
+      "code": "Kerstin10",
+      "discount": null,
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "teveo",
+      "company": "Teveo",
+      "code": "celinaxcex10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    }
+  ]
+}

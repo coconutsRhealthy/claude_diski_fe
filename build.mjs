@@ -11,17 +11,21 @@ const SITE_NAME = process.env.SITE_NAME || 'Diski';
 
 // Per-locale public URLs, used for canonical, OG, sitemap, hreflang.
 const SITE_URLS = {
-  nl: (process.env.SITE_URL_NL || 'https://example.com').replace(/\/$/, ''),
+  be: (process.env.SITE_URL_BE || 'https://example.be').replace(/\/$/, ''),
   de: (process.env.SITE_URL_DE || 'https://example.de').replace(/\/$/, ''),
 };
+
+// Maps locale keys (folder/URL slot) to BCP-47 language tags used for Intl
+// formatters and og:locale. Add a new entry here when introducing a locale.
+const OG_LOCALES = { be: 'nl_BE', de: 'de_DE', nl: 'nl_NL' };
 
 // ---------------------------------------------------------------------------
 // i18n
 // ---------------------------------------------------------------------------
 
 const LOCALES = {
-  nl: {
-    lang: 'nl',
+  be: {
+    lang: 'nl-BE',
     tagline: 'Verse kortingscodes voor honderden webshops',
     homeLead: (n) => `Bespaar bij ${n} webshops met geverifieerde codes — geen gedoe, geen fake kortingen.`,
     homeMetaDesc: (n) => `Vind actuele kortingscodes voor ${n}+ webshops. Dagelijks bijgewerkt en handmatig gecontroleerd.`,
@@ -137,18 +141,16 @@ const LOCALES = {
 
 function parseDiscounts(file) {
   const raw = JSON.parse(readFileSync(file, 'utf8'));
+  const list = Array.isArray(raw?.discount_codes) ? raw.discount_codes : [];
   const items = [];
-  for (const line of raw) {
-    if (typeof line !== 'string' || !line.trim()) continue;
-    const parts = line.split(',').map((s) => s.trim());
-    if (parts.length < 5) continue;
-    const date = parts.pop();
-    const source = parts.pop();
-    const discount = parts.pop();
-    const code = parts.pop();
-    const shop = parts.join(', ');
-    if (!shop || !code) continue;
-    items.push({ shop, code, discount, source, date });
+  for (const entry of list) {
+    if (!entry || typeof entry !== 'object') continue;
+    const companyId = typeof entry.company_id === 'string' ? entry.company_id.trim() : '';
+    const shop = typeof entry.company === 'string' ? entry.company.trim() : '';
+    const code = typeof entry.code === 'string' ? entry.code.trim() : '';
+    const date = typeof entry.date === 'string' ? entry.date.trim() : '';
+    if (!companyId || !shop || !code) continue;
+    items.push({ companyId, shop, code, discount: entry.discount ?? null, date });
   }
   return items;
 }
@@ -212,36 +214,29 @@ function normalizeKey(s) {
   return s.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]/g, '');
 }
 
-function urlSlug(s) {
-  return s
-    .toLowerCase()
-    .replace(/\([^)]*\)/g, '')
-    .replace(/&/g, ' en ')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
-
-function displayName(shop) {
-  return shop
-    .replace(/\.nl|\.com|\.it|\.de/gi, (m) => m.toLowerCase())
-    .split(' ')
-    .map((w) =>
-      w.length > 0 && /^[a-z]/.test(w) ? w.charAt(0).toUpperCase() + w.slice(1) : w
-    )
-    .join(' ');
-}
-
-function parseDateMMDD(s) {
+function parseDateSortKey(s) {
+  if (typeof s !== 'string') return 0;
   const parts = s.split('-').map((n) => parseInt(n, 10));
-  if (parts.length !== 2 || parts.some(Number.isNaN)) return 0;
-  return parts[0] * 100 + parts[1];
+  if (parts.some(Number.isNaN)) return 0;
+  if (parts.length === 3) return parts[0] * 10000 + parts[1] * 100 + parts[2];
+  if (parts.length === 2) return parts[0] * 100 + parts[1];
+  return 0;
 }
 
-function formatDate(mmdd, locale) {
-  const parts = mmdd.split('-').map((n) => parseInt(n, 10));
-  if (parts.length !== 2 || parts.some(Number.isNaN)) return mmdd;
-  const [mm, dd] = parts;
-  const d = new Date(2000, mm - 1, dd);
+function formatDate(s, locale) {
+  if (typeof s !== 'string') return '';
+  const parts = s.split('-').map((n) => parseInt(n, 10));
+  if (parts.some(Number.isNaN)) return s;
+  let d;
+  if (parts.length === 3) {
+    const [yyyy, mm, dd] = parts;
+    d = new Date(yyyy, mm - 1, dd);
+  } else if (parts.length === 2) {
+    const [mm, dd] = parts;
+    d = new Date(2000, mm - 1, dd);
+  } else {
+    return s;
+  }
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long' }).format(d);
 }
 
@@ -258,7 +253,7 @@ function formatDiscountValue(disc) {
 // Dataset
 // ---------------------------------------------------------------------------
 
-function buildDataset(locale) {
+function buildDataset(locale, langTag) {
   const dataDir = join(ROOT, 'data', locale);
   const discountsFile = join(dataDir, 'discounts.json');
   const shopsFile = join(dataDir, 'shops.json');
@@ -268,15 +263,14 @@ function buildDataset(locale) {
 
   const groups = new Map();
   for (const d of discounts) {
-    const baseShop = d.shop.replace(/\s*\([^)]*\)\s*$/, '').trim();
-    const slug = urlSlug(baseShop);
+    const slug = d.companyId;
     if (!slug) continue;
     if (!groups.has(slug)) {
-      const meta = shopMeta.get(normalizeKey(baseShop)) || null;
+      const meta = shopMeta.get(normalizeKey(slug)) || null;
       groups.set(slug, {
         slug,
-        name: displayName(baseShop),
-        rawName: baseShop,
+        name: d.shop,
+        rawName: d.shop,
         codes: [],
         affiliate: meta?.url ? { url: meta.url } : null,
         logo: meta?.logo || null,
@@ -288,7 +282,7 @@ function buildDataset(locale) {
   for (const g of groups.values()) {
     const seen = new Set();
     g.codes = g.codes
-      .sort((a, b) => parseDateMMDD(b.date) - parseDateMMDD(a.date))
+      .sort((a, b) => parseDateSortKey(b.date) - parseDateSortKey(a.date))
       .filter((c) => {
         const k = c.code.toLowerCase();
         if (seen.has(k)) return false;
@@ -298,21 +292,20 @@ function buildDataset(locale) {
     g.latestDate = g.codes[0]?.date || '';
   }
 
-  const collator = new Intl.Collator(locale);
+  const collator = new Intl.Collator(langTag || locale);
   const shops = [...groups.values()].sort((a, b) => collator.compare(a.name, b.name));
 
   // Re-emit raw discounts with shop slug/name/logo attached, preserving JSON
   // file order — used by the homepage "latest" section.
   const enrichedDiscounts = discounts
     .map((d) => {
-      const baseShop = d.shop.replace(/\s*\([^)]*\)\s*$/, '').trim();
-      const slug = urlSlug(baseShop);
+      const slug = d.companyId;
       if (!slug) return null;
       const group = groups.get(slug);
       return {
         ...d,
         shopSlug: slug,
-        shopName: displayName(baseShop),
+        shopName: d.shop,
         shopLogo: group?.logo || null,
       };
     })
@@ -336,10 +329,10 @@ function esc(s) {
 
 function renderHreflang(pathname) {
   return Object.entries(SITE_URLS)
-    .map(
-      ([loc, base]) =>
-        `<link rel="alternate" hreflang="${loc}" href="${esc(base + pathname)}">`
-    )
+    .map(([loc, base]) => {
+      const tag = LOCALES[loc]?.lang || loc;
+      return `<link rel="alternate" hreflang="${tag}" href="${esc(base + pathname)}">`;
+    })
     .join('\n');
 }
 
@@ -361,7 +354,7 @@ ${alternates}
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:site_name" content="${esc(SITE_NAME)}">
-<meta property="og:locale" content="${t.lang === 'de' ? 'de_DE' : 'nl_NL'}">
+<meta property="og:locale" content="${OG_LOCALES[ctx.locale] || 'en_US'}">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
@@ -434,7 +427,8 @@ function discountText(t, disc) {
 // ---------------------------------------------------------------------------
 
 function renderHome(ctx) {
-  const { t, siteUrl, shops, discounts, locale } = ctx;
+  const { t, siteUrl, shops, discounts } = ctx;
+  const langTag = t.lang;
 
   // Rank by click popularity (click_events.tsv). Shops with no click data
   // get a score of 0 and are ordered after the popular ones.
@@ -478,10 +472,10 @@ function renderHome(ctx) {
   if (latest.length < 24) {
     const shown = new Set(latestShops.map((s) => s.slug));
     for (const s of featured) shown.add(s.slug);
-    const dates = discounts.map((d) => parseDateMMDD(d.date)).filter((n) => n > 0);
+    const dates = discounts.map((d) => parseDateSortKey(d.date)).filter((n) => n > 0);
     const maxDate = dates.length ? Math.max(...dates) : 0;
     const more = discounts
-      .filter((d) => parseDateMMDD(d.date) === maxDate && !shown.has(d.shopSlug))
+      .filter((d) => parseDateSortKey(d.date) === maxDate && !shown.has(d.shopSlug))
       .slice(0, 24 - latest.length);
     latest.push(...more);
   }
@@ -534,7 +528,7 @@ function renderHome(ctx) {
             <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
           </span>
         </a>
-        <span class="date">${esc(formatDate(c.date, locale))}</span>
+        <span class="date">${esc(formatDate(c.date, langTag))}</span>
       </li>`
       )
       .join('\n')}
@@ -653,7 +647,7 @@ function renderShop(ctx, shop) {
 <article class="code${reveal ? ' is-revealed' : ''}" data-index="${i}">
   <div class="code-info">
     <h3>${esc(discountText(t, c.discount))}</h3>
-    <p class="muted">${esc(t.codeAdded(formatDate(c.date, ctx.locale)))}</p>
+    <p class="muted">${esc(t.codeAdded(formatDate(c.date, ctx.t.lang)))}</p>
   </div>
   <div class="code-action">
     <div class="code-value" data-code="${esc(c.code)}">
@@ -757,7 +751,7 @@ function buildLocale(locale) {
   mkdirSync(distDir, { recursive: true });
   if (existsSync(PUBLIC)) cpSync(PUBLIC, distDir, { recursive: true });
 
-  const dataset = buildDataset(locale);
+  const dataset = buildDataset(locale, t.lang);
 
   // Apply click-event popularity scores to each shop, when click data is
   // available. Used by renderHome() to drive the featured + latest sections.
