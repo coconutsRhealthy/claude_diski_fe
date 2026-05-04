@@ -77,6 +77,10 @@ const LOCALES = {
     cardDiscount: (top) => `tot ${top} korting`,
     badge: 'deal',
     schemaCodes: 'kortingscodes',
+    statShopsLabel: 'webshops',
+    statCodesLabel: 'actuele codes',
+    statTodayUpdated: 'Vandaag bijgewerkt',
+    revealMicrocopy: 'Opent in dit tabblad · via partnerlink',
   },
   de: {
     lang: 'de',
@@ -132,6 +136,10 @@ const LOCALES = {
     cardDiscount: (top) => `bis zu ${top} Rabatt`,
     badge: 'deal',
     schemaCodes: 'Rabattcodes',
+    statShopsLabel: 'Shops',
+    statCodesLabel: 'aktuelle Codes',
+    statTodayUpdated: 'Heute aktualisiert',
+    revealMicrocopy: 'Öffnet in diesem Tab · über Partnerlink',
   },
 };
 
@@ -317,15 +325,18 @@ ${alternates}
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#fafaf9">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/style.css">
 ${ld}
 </head>
 <body>
 <header class="site-header">
   <div class="container">
-    <a href="/" class="brand"><span class="brand-mark">%</span> ${esc(SITE_NAME)}</a>
-    <nav>
+    <a href="/" class="brand"><span class="brand-mark">%</span>${esc(SITE_NAME)}</a>
+    <nav class="site-nav">
       <a href="/"${activeNav === 'home' ? ' aria-current="page"' : ''}>${esc(t.navHome)}</a>
       <a href="/shops/"${activeNav === 'shops' ? ' aria-current="page"' : ''}>${esc(t.navShops)}</a>
     </nav>
@@ -336,7 +347,8 @@ ${body}
 </main>
 <footer class="site-footer">
   <div class="container">
-    <p>${esc(t.footerText(new Date().getFullYear(), SITE_NAME))}</p>
+    <span>${esc(t.footerText(new Date().getFullYear(), SITE_NAME))}</span>
+    <span><a href="/shops/">${esc(t.navShops)}</a></span>
   </div>
 </footer>
 <script src="/reveal.js" defer></script>
@@ -346,33 +358,31 @@ ${body}
 
 function logoHtml(item, size) {
   // `item` may be a shop ({ logo, name }) or an enriched discount
-  // ({ shopLogo, shopName }). Render an <img> when a logo URL exists,
-  // otherwise a neutral placeholder showing the first letter of the name.
+  // ({ shopLogo, shopName }). Render a logo tile (wrapper span) containing
+  // either an <img> or a letter placeholder. `size` is sm | md | lg; md
+  // is the default and adds no modifier class.
   const logo = item.logo || item.shopLogo || null;
   const name = item.name || item.shopName || '?';
-  const cls = `shop-logo shop-logo--${size}`;
+  const sizeMod = size && size !== 'md' ? ` shop-logo--${size}` : '';
+  const cls = `shop-logo${sizeMod}`;
   if (logo) {
-    return `<img class="${cls}" src="${esc(logo)}" alt="" loading="lazy" decoding="async">`;
+    return `<span class="${cls}"><img src="${esc(logo)}" alt="" loading="lazy" decoding="async"></span>`;
   }
   const initial = (name.charAt(0) || '?').toUpperCase();
-  return `<span class="${cls} shop-logo--placeholder" aria-hidden="true">${esc(initial)}</span>`;
+  return `<span class="${cls}"><span class="placeholder" aria-hidden="true">${esc(initial)}</span></span>`;
 }
 
 function shopCard(ctx, shop) {
   const { t } = ctx;
   const count = shop.codes.length;
   const top = shop.codes[0];
-  const flag = shop.affiliate ? `<span class="badge">${esc(t.badge)}</span>` : '';
   const meta = `${esc(t.cardCount(count))}${top ? ` · ${esc(t.cardDiscount(formatDiscountValue(top.discount)))}` : ''}`;
-  return `<a class="card shop-card" href="/shop/${esc(shop.slug)}/">
+  return `<a class="shop-card" href="/shop/${esc(shop.slug)}/">
     ${logoHtml(shop, 'md')}
-    <div class="shop-card-body">
-      <div class="card-row">
-        <h3>${esc(shop.name)}</h3>
-        ${flag}
-      </div>
-      <p class="muted">${meta}</p>
-    </div>
+    <span class="shop-card-body">
+      <h3 class="shop-card-name">${esc(shop.name)}</h3>
+      <span class="shop-card-meta">${meta}</span>
+    </span>
   </a>`;
 }
 
@@ -421,40 +431,54 @@ function renderHome(ctx) {
     },
   };
 
+  const totalCodes = discounts.length;
+
   const body = `
 <section class="hero">
   <h1>${esc(t.tagline)}</h1>
   <p class="lead">${esc(t.homeLead(shops.length))}</p>
-  <p><a class="btn" href="/shops/">${esc(t.btnAllShops)}</a></p>
+  <div class="hero-cta">
+    <a class="btn" href="/shops/">${esc(t.btnAllShops)}</a>
+  </div>
+  <div class="hero-meta">
+    <span class="hero-meta-item"><strong>${shops.length}</strong> ${esc(t.statShopsLabel)}</span>
+    <span class="hero-meta-item"><strong>${totalCodes}</strong> ${esc(t.statCodesLabel)}</span>
+    <span class="hero-meta-item"><span class="hero-meta-dot"></span> ${esc(t.statTodayUpdated)}</span>
+  </div>
 </section>
 
-<section>
+<section class="block">
   <div class="section-head">
     <h2>${esc(t.sectionFeatured)}</h2>
-    <a class="muted" href="/shops/">${esc(t.sectionAllLink)}</a>
+    <a class="btn-link" href="/shops/">${esc(t.sectionAllLink)}</a>
   </div>
   <div class="grid">
     ${featured.map((s) => shopCard(ctx, s)).join('\n')}
   </div>
 </section>
 
-<section>
-  <h2>${esc(t.sectionLatest)}</h2>
+<section class="block">
+  <div class="section-head">
+    <h2>${esc(t.sectionLatest)}</h2>
+    <a class="btn-link" href="/shops/">${esc(t.sectionAllLink)}</a>
+  </div>
   <ul class="latest-list">
     ${latest
-      .map(
-        (c) => `
+      .map((c) => {
+        const v = formatDiscountValue(c.discount);
+        const discount = v
+          ? `<strong>${esc(v)}</strong> ${esc(t.discountSuffix)}`
+          : esc(t.discountSuffix);
+        return `
       <li>
-        <a href="/shop/${esc(c.shopSlug)}/">
+        <a class="row-link" href="/shop/${esc(c.shopSlug)}/">
           ${logoHtml(c, 'sm')}
-          <span class="latest-text">
-            <strong>${esc(c.shopName)}</strong>
-            <span class="muted"> · ${esc(discountText(t, c.discount))}</span>
-          </span>
+          <span class="latest-shop-name">${esc(c.shopName)}</span>
+          <span class="latest-discount">${discount}</span>
+          <span class="latest-date">${esc(formatDate(c.date, langTag))}</span>
         </a>
-        <span class="date">${esc(formatDate(c.date, langTag))}</span>
-      </li>`
-      )
+      </li>`;
+      })
       .join('\n')}
   </ul>
 </section>
@@ -496,10 +520,10 @@ function renderAllShops(ctx) {
   const letters = [...byLetter.keys()].sort();
 
   const body = `
-<section class="hero compact">
+<section class="shops-hero">
   <h1>${esc(t.allShopsH1)}</h1>
   <p class="lead">${esc(t.allShopsLead(shops.length))}</p>
-  <input type="search" id="shop-filter" placeholder="${esc(t.filterPlaceholder)}" aria-label="${esc(t.filterPlaceholder)}">
+  <input type="search" id="shop-filter" class="shop-filter" placeholder="${esc(t.filterPlaceholder)}" aria-label="${esc(t.filterPlaceholder)}">
 </section>
 
 <nav class="alpha-index" aria-label="${esc(t.alphaAria)}">
@@ -507,15 +531,20 @@ function renderAllShops(ctx) {
 </nav>
 
 ${letters
-  .map(
-    (l) => `
+  .map((l) => {
+    const group = byLetter.get(l);
+    const count = `${group.length} ${group.length === 1 ? 'shop' : 'shops'}`;
+    return `
 <section class="letter-block" id="l-${esc(l)}">
-  <h2>${esc(l)}</h2>
-  <div class="grid">
-    ${byLetter.get(l).map((s) => shopCard(ctx, s)).join('\n')}
+  <div class="letter-block-head">
+    <span class="letter-block-letter">${esc(l)}</span>
+    <span class="letter-block-count">${esc(count)}</span>
   </div>
-</section>`
-  )
+  <div class="grid">
+    ${group.map((s) => shopCard(ctx, s)).join('\n')}
+  </div>
+</section>`;
+  })
   .join('\n')}
 `;
 
@@ -567,22 +596,29 @@ function renderShop(ctx, shop) {
   const codesHtml = shop.codes
     .map((c, i) => {
       const reveal = !hasAffiliate;
+      const value = formatDiscountValue(c.discount);
+      const discountBlock = value
+        ? `<div class="code-discount">
+      <span class="value">${esc(value)}</span>
+      <span class="suffix">${esc(t.discountSuffix)}</span>
+    </div>`
+        : `<div class="code-discount"><span class="value hint">—</span></div>`;
+      const revealBlock = hasAffiliate
+        ? `<button type="button" class="reveal-btn" data-affiliate="${esc(affiliateUrl)}" data-index="${i}">${esc(t.btnReveal)}</button>
+    <span class="reveal-microcopy">${esc(t.revealMicrocopy)}</span>`
+        : '';
       return `
 <article class="code${reveal ? ' is-revealed' : ''}" data-index="${i}">
+  ${discountBlock}
   <div class="code-info">
-    <h3>${esc(discountText(t, c.discount))}</h3>
-    <p class="muted">${esc(t.codeAdded(formatDate(c.date, ctx.t.lang)))}</p>
+    <p class="added">${esc(t.codeAdded(formatDate(c.date, ctx.t.lang)))}</p>
   </div>
   <div class="code-action">
     <div class="code-value" data-code="${esc(c.code)}">
       <span class="code-text">${esc(c.code)}</span>
       <button type="button" class="copy-btn" aria-label="${esc(t.btnAriaCopy)}" data-copied="${esc(t.btnCopied)}">${esc(t.btnCopy)}</button>
     </div>
-    ${
-      hasAffiliate
-        ? `<button type="button" class="reveal-btn" data-affiliate="${esc(affiliateUrl)}" data-index="${i}">${esc(t.btnReveal)}</button>`
-        : ''
-    }
+    ${revealBlock}
   </div>
 </article>`;
     })
@@ -610,12 +646,16 @@ function renderShop(ctx, shop) {
 </section>
 
 <section class="shop-meta">
-  <h2>${esc(t.shopMetaH2About(shop.name))}</h2>
-  <p>${esc(t.shopMetaAboutBody(codeCount, shop.name))}</p>
-  <h2>${esc(t.shopMetaH2How(shop.name))}</h2>
-  <ol>
-    ${howSteps.map((step) => `<li>${step}</li>`).join('\n')}
-  </ol>
+  <div>
+    <h2>${esc(t.shopMetaH2About(shop.name))}</h2>
+    <p>${esc(t.shopMetaAboutBody(codeCount, shop.name))}</p>
+  </div>
+  <div>
+    <h2>${esc(t.shopMetaH2How(shop.name))}</h2>
+    <ol>
+      ${howSteps.map((step) => `<li>${step}</li>`).join('\n')}
+    </ol>
+  </div>
 </section>
 `;
 
