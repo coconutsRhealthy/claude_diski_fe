@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-04-30T04:05:25+00:00",
+  "discount_codes": [
+    {
+      "company_id": "atelierdusourcilbailli",
+      "company": "Atelier du Sourcil Bailli",
+      "code": "MARGAUX25",
+      "discount": "25%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "blakelywomen",
+      "company": "Blakely Women",
+      "code": "INF-SHANA",
+      "discount": null,
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "celiniandkrastase",
+      "company": "Celini & Kérastase",
+      "code": "MOUNIA20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "drks",
+      "company": "DRKS",
+      "code": "MAMA20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "drks",
+      "company": "DRKS",
+      "code": "MAMALOVE",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "finaste",
+      "company": "Finaste",
+      "code": "MAMA20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "hellofresh",
+      "company": "HelloFresh",
+      "code": "HELLOYONI",
+      "discount": "Up to €75 off",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "icaniwill",
+      "company": "I Can I Will",
+      "code": "MAITE20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "june21jewelry",
+      "company": "June 21 Jewelry",
+      "code": "TATJANA15",
+      "discount": "15%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "pinkgellac",
+      "company": "Pink Gellac",
+      "code": "MARIAMPRETTY10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "tapout",
+      "company": "Tap Out",
+      "code": "DAPHNIE10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "temu",
+      "company": "Temu",
+      "code": "kcc5439",
+      "discount": "€100 coupon bundle",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "thejavacoffeecompany",
+      "company": "The Java Coffee Company",
+      "code": "SHAUNI10",
+      "discount": "10%",
+      "date": "2026-04-30"
+    },
+    {
+      "company_id": "trendcarpet",
+      "company": "Trend Carpet",
+      "code": "ZARAHOOGSTRATEN20",
+      "discount": "20%",
+      "date": "2026-04-30"
+    }
+  ]
+}
