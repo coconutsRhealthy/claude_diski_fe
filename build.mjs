@@ -169,47 +169,6 @@ function parseShops(file) {
   return map;
 }
 
-// Strip these from the start of a TSV event label before matching against shop
-// keys. The leftover should be a shop name. Anything that doesn't match a known
-// shop after stripping is silently ignored.
-const CLICK_EVENT_PREFIXES = [
-  'comp_codes_aff_open_',
-  'giftcard_inmodal_',
-  'giftcard_companypage_table_',
-];
-
-function parseClickEvents(file) {
-  const text = readFileSync(file, 'utf8');
-  const counts = new Map();
-  for (const line of text.split('\n')) {
-    if (!line || line.startsWith('#')) continue;
-    const tab = line.indexOf('\t');
-    if (tab < 0) continue;
-    const label = line.slice(0, tab).trim();
-    const count = parseInt(line.slice(tab + 1).trim(), 10);
-    if (!label || !Number.isFinite(count) || count <= 0) continue;
-    let shop = label;
-    for (const p of CLICK_EVENT_PREFIXES) {
-      if (label.startsWith(p)) {
-        shop = label.slice(p.length);
-        break;
-      }
-    }
-    const k = normalizeKey(shop);
-    if (!k) continue;
-    counts.set(k, (counts.get(k) || 0) + count);
-  }
-  return counts;
-}
-
-function locateClickEventsFile(locale) {
-  const localeFile = join(ROOT, 'data', locale, 'click_events.tsv');
-  if (existsSync(localeFile)) return localeFile;
-  const rootFile = join(ROOT, 'click_events.tsv');
-  if (existsSync(rootFile)) return rootFile;
-  return null;
-}
-
 function normalizeKey(s) {
   return s.toLowerCase().replace(/\([^)]*\)/g, '').replace(/[^a-z0-9]/g, '');
 }
@@ -430,55 +389,20 @@ function renderHome(ctx) {
   const { t, siteUrl, shops, discounts } = ctx;
   const langTag = t.lang;
 
-  // Rank by click popularity (click_events.tsv). Shops with no click data
-  // get a score of 0 and are ordered after the popular ones.
-  const ranked = [...shops]
-    .filter((s) => (s.clickScore || 0) > 0)
-    .sort((a, b) => b.clickScore - a.clickScore);
-
-  // Featured: top 12 popular shops. If fewer than 12 shops have click data,
-  // top up with the previous heuristic (affiliate-link shops, by code count).
+  // Featured: shops with an affiliate link, ranked by code count (top 12).
   const featuredSet = new Set();
-  const featured = [];
-  for (const s of ranked) {
-    if (featured.length >= 12) break;
-    featured.push(s);
-    featuredSet.add(s);
-  }
-  if (featured.length < 12) {
-    const fallback = [...shops]
-      .filter((s) => s.affiliate && !featuredSet.has(s))
-      .sort((a, b) => b.codes.length - a.codes.length);
-    for (const s of fallback) {
-      if (featured.length >= 12) break;
-      featured.push(s);
-      featuredSet.add(s);
-    }
-  }
+  const featured = [...shops]
+    .filter((s) => s.affiliate)
+    .sort((a, b) => b.codes.length - a.codes.length)
+    .slice(0, 12);
+  for (const s of featured) featuredSet.add(s);
 
-  // "Latest" section: the next 24 popular shops (after the featured set),
-  // showing each one's most recent code. If fewer than 24 popular shops are
-  // left, top up with the most recent codes overall (de-duped against the
-  // shops already shown above).
-  const latestShops = ranked
-    .filter((s) => !featuredSet.has(s) && s.codes.length > 0)
+  // Latest: most recent codes overall, de-duped against featured shops.
+  const shown = new Set(featured.map((s) => s.slug));
+  const latest = [...discounts]
+    .sort((a, b) => parseDateSortKey(b.date) - parseDateSortKey(a.date))
+    .filter((d) => !shown.has(d.shopSlug))
     .slice(0, 24);
-  const latest = latestShops.map((s) => ({
-    ...s.codes[0],
-    shopSlug: s.slug,
-    shopName: s.name,
-    shopLogo: s.logo,
-  }));
-  if (latest.length < 24) {
-    const shown = new Set(latestShops.map((s) => s.slug));
-    for (const s of featured) shown.add(s.slug);
-    const dates = discounts.map((d) => parseDateSortKey(d.date)).filter((n) => n > 0);
-    const maxDate = dates.length ? Math.max(...dates) : 0;
-    const more = discounts
-      .filter((d) => parseDateSortKey(d.date) === maxDate && !shown.has(d.shopSlug))
-      .slice(0, 24 - latest.length);
-    latest.push(...more);
-  }
 
   const title = `${SITE_NAME} — ${t.tagline}`;
   const description = t.homeMetaDesc(shops.length);
@@ -753,17 +677,6 @@ function buildLocale(locale) {
 
   const dataset = buildDataset(locale, t.lang);
 
-  // Apply click-event popularity scores to each shop, when click data is
-  // available. Used by renderHome() to drive the featured + latest sections.
-  const clickFile = locateClickEventsFile(locale);
-  const clicks = clickFile ? parseClickEvents(clickFile) : new Map();
-  let rankedCount = 0;
-  for (const s of dataset.shops) {
-    const score = clicks.get(normalizeKey(s.rawName)) || 0;
-    s.clickScore = score;
-    if (score > 0) rankedCount++;
-  }
-
   const ctx = { locale, t, siteUrl, shops: dataset.shops, discounts: dataset.discounts };
 
   writePage(distDir, 'index.html', renderHome(ctx));
@@ -776,9 +689,7 @@ function buildLocale(locale) {
   buildRobots(distDir, siteUrl);
 
   console.log(
-    `[${locale}] ${dataset.shops.length} shops, ${dataset.discounts.length} codes` +
-      (clickFile ? `, ${rankedCount} ranked by click data` : ', no click data') +
-      ` → ${distDir}`
+    `[${locale}] ${dataset.shops.length} shops, ${dataset.discounts.length} codes → ${distDir}`
   );
 }
 

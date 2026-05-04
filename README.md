@@ -7,7 +7,6 @@ Two locales ship today: **BE** (Belgian / Flemish market, `nl-BE`) and **DE** (G
 ## Project layout
 
 ```
-click_events.tsv         ← optional, shared: drives popularity ranking on home
 data/
   be/
     discounts.json
@@ -23,21 +22,10 @@ dist/
   de/                    ← built DE site
 ```
 
-### click_events.tsv (optional)
+The homepage shows two sections:
 
-The build looks for `data/<locale>/click_events.tsv` first, then falls back to a shared `click_events.tsv` at the project root. When found, the build uses it to rank shops on the homepage:
-
-- **Featured section** — top 12 shops by click popularity
-- **Latest section** — next 24 popular shops, each with their most recent code
-
-The TSV format is GA-export style: tab-separated `event_label\tcount` lines, with `#`-prefixed comment header lines ignored. Recognised event prefixes:
-
-- `comp_codes_aff_open_<shop>` — affiliate clicks
-- `giftcard_inmodal_<shop>`
-- `giftcard_companypage_table_<shop>`
-- bare `<shop>` — direct click on the shop's tile
-
-Counts from all matching rows are summed per shop. Unknown labels are silently dropped. If no click data is available, both sections fall back to the previous defaults (most-codes-with-affiliate / latest by date).
+- **Featured** — top 12 shops with an affiliate link, ranked by code count
+- **Latest** — 24 most recent codes, de-duped against featured shops
 
 ### discounts.json schema
 
