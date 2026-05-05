@@ -29,6 +29,8 @@ The homepage shows two sections:
 
 ### discounts.json schema
 
+> **Note:** committed `data/<locale>/discounts.json` files are dev fixtures — the live site is built from data produced by the [`claude_diski_data`](https://github.com/coconutsRhealthy/claude_diski_data) pipeline on the droplet, fed in via the `DATA_FILE` env var (see "Local" below).
+
 ```json
 {
   "generated_at": "2026-04-30T04:05:25+00:00",
@@ -82,6 +84,7 @@ LOCALE=de node serve.mjs
 | `SITE_URL_BE` | Canonical / sitemap / hreflang for BE | `https://example.be` |
 | `SITE_URL_DE` | Canonical / sitemap / hreflang for DE | `https://example.de` |
 | `LOCALE` | If set, builds only that locale | unset (builds both) |
+| `DATA_FILE` | Override path to discounts JSON (requires `LOCALE`) | unset (uses `data/<locale>/discounts.json`) |
 
 Example:
 
