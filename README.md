@@ -80,30 +80,34 @@ LOCALE=de node serve.mjs
 | Var | Purpose | Default |
 |---|---|---|
 | `SITE_NAME` | Shown in header, footer, OG tags | `Diski` |
-| `SITE_URL_BE` | Canonical / sitemap / hreflang for BE | `https://example.be` |
-| `SITE_URL_DE` | Canonical / sitemap / hreflang for DE | `https://example.de` |
-| `SITE_URL_FR` | Canonical / sitemap / hreflang for FR | `https://example.fr` |
-| `SITE_URL_UK` | Canonical / sitemap / hreflang for UK | `https://example.co.uk` |
+| `SITE_URL_BE` | Canonical / sitemap / hreflang for BE | `https://int-diski-belgium.pages.dev` |
+| `SITE_URL_DE` | Canonical / sitemap / hreflang for DE | `https://int-diski-germany.pages.dev` |
+| `SITE_URL_FR` | Canonical / sitemap / hreflang for FR | `https://int-diski-france.pages.dev` |
+| `SITE_URL_UK` | Canonical / sitemap / hreflang for UK | `https://int-diski-uk.pages.dev` |
 | `LOCALE` | If set, builds only that locale | unset (builds all) |
 | `DATA_FILE` | Override path to discounts JSON (requires `LOCALE`) | unset (uses `data/<locale>/discounts.json`) |
 
 Example:
 
 ```bash
-SITE_URL_BE=https://diski.be \
-SITE_URL_DE=https://diski.de \
+SITE_URL_BE=https://int-diski-belgium.pages.dev \
+SITE_URL_DE=https://int-diski-germany.pages.dev \
+SITE_URL_FR=https://int-diski-france.pages.dev \
+SITE_URL_UK=https://int-diski-uk.pages.dev \
 node build.mjs
 ```
 
+When custom domains are wired up (e.g. `https://diski.de`), point the relevant `SITE_URL_*` at the production hostname instead.
+
 ## Cloudflare Pages
 
-Run **one project per locale**, both pointing at this same repo:
+Run **one project per locale** — current internal URLs follow the `int-diski-<country>.pages.dev` pattern:
 
-| | BE project | DE project |
-|---|---|---|
-| Build command | `LOCALE=be node build.mjs` | `LOCALE=de node build.mjs` |
-| Output dir | `dist/be` | `dist/de` |
-| Env vars | `SITE_URL_BE`, `SITE_NAME`, `NODE_VERSION=20` | `SITE_URL_DE`, `SITE_NAME`, `NODE_VERSION=20` |
+| | BE | DE | FR | UK |
+|---|---|---|---|---|
+| Build | `LOCALE=be node build.mjs` | `LOCALE=de …` | `LOCALE=fr …` | `LOCALE=uk …` |
+| Output dir | `dist/be` | `dist/de` | `dist/fr` | `dist/uk` |
+| Pages project | `int-diski-belgium` | `int-diski-germany` | `int-diski-france` | `int-diski-uk` |
 
 That's it — no framework, no `npm install`.
 

@@ -11,10 +11,10 @@ const SITE_NAME = process.env.SITE_NAME || 'Diski';
 
 // Per-locale public URLs, used for canonical, OG, sitemap, hreflang.
 const SITE_URLS = {
-  be: (process.env.SITE_URL_BE || 'https://example.be').replace(/\/$/, ''),
-  de: (process.env.SITE_URL_DE || 'https://example.de').replace(/\/$/, ''),
-  fr: (process.env.SITE_URL_FR || 'https://example.fr').replace(/\/$/, ''),
-  uk: (process.env.SITE_URL_UK || 'https://example.co.uk').replace(/\/$/, ''),
+  be: (process.env.SITE_URL_BE || 'https://int-diski-belgium.pages.dev').replace(/\/$/, ''),
+  de: (process.env.SITE_URL_DE || 'https://int-diski-germany.pages.dev').replace(/\/$/, ''),
+  fr: (process.env.SITE_URL_FR || 'https://int-diski-france.pages.dev').replace(/\/$/, ''),
+  uk: (process.env.SITE_URL_UK || 'https://int-diski-uk.pages.dev').replace(/\/$/, ''),
 };
 
 // Maps locale keys (folder/URL slot) to BCP-47 language tags used for Intl
