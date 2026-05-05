@@ -220,9 +220,9 @@ function formatDiscountValue(disc) {
 // Dataset
 // ---------------------------------------------------------------------------
 
-function buildDataset(locale, langTag) {
+function buildDataset(locale, langTag, opts = {}) {
   const dataDir = join(ROOT, 'data', locale);
-  const discountsFile = join(dataDir, 'discounts.json');
+  const discountsFile = opts.discountsFile || join(dataDir, 'discounts.json');
   const shopsFile = join(dataDir, 'shops.json');
 
   const discounts = existsSync(discountsFile) ? parseDiscounts(discountsFile) : [];
@@ -705,7 +705,7 @@ Sitemap: ${siteUrl}/sitemap.xml
   writeFileSync(join(distDir, 'robots.txt'), txt);
 }
 
-function buildLocale(locale) {
+function buildLocale(locale, opts = {}) {
   if (!LOCALES[locale]) throw new Error(`Unknown locale: ${locale}`);
   const t = LOCALES[locale];
   const siteUrl = SITE_URLS[locale];
@@ -715,7 +715,7 @@ function buildLocale(locale) {
   mkdirSync(distDir, { recursive: true });
   if (existsSync(PUBLIC)) cpSync(PUBLIC, distDir, { recursive: true });
 
-  const dataset = buildDataset(locale, t.lang);
+  const dataset = buildDataset(locale, t.lang, opts);
 
   const ctx = { locale, t, siteUrl, shops: dataset.shops, discounts: dataset.discounts };
 
@@ -728,15 +728,26 @@ function buildLocale(locale) {
   buildSitemap(distDir, siteUrl, dataset.shops);
   buildRobots(distDir, siteUrl);
 
+  const src = opts.discountsFile ? ` (data: ${opts.discountsFile})` : '';
   console.log(
-    `[${locale}] ${dataset.shops.length} shops, ${dataset.discounts.length} codes → ${distDir}`
+    `[${locale}] ${dataset.shops.length} shops, ${dataset.discounts.length} codes${src} → ${distDir}`
   );
 }
 
 function main() {
   const requested = process.env.LOCALE;
+  const dataFile = process.env.DATA_FILE;
+  if (dataFile && !requested) {
+    throw new Error('DATA_FILE requires LOCALE to be set (single-locale build).');
+  }
+  if (dataFile && !existsSync(dataFile)) {
+    throw new Error(`DATA_FILE does not exist: ${dataFile}`);
+  }
   const locales = requested ? [requested] : Object.keys(LOCALES);
-  for (const loc of locales) buildLocale(loc);
+  for (const loc of locales) {
+    const opts = dataFile && loc === requested ? { discountsFile: dataFile } : {};
+    buildLocale(loc, opts);
+  }
 }
 
 main();
