@@ -1,6 +1,699 @@
 {
-  "generated_at": "2026-04-30T04:05:25+00:00",
+  "generated_at": "2026-05-04T01:05:45+00:00",
   "discount_codes": [
+    {
+      "company_id": "3bears",
+      "company": "3Bears",
+      "code": "SASA12",
+      "discount": "12% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "aiper",
+      "company": "Aiper",
+      "code": "SCHMOCKI5OFF",
+      "discount": "5%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "americanheritageliving",
+      "company": "American Heritage Living",
+      "code": "Katrin10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asam",
+      "company": "Asam",
+      "code": "MITHERZ25",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "CRISTINA25",
+      "discount": "25% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "DISI15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "MAUSISI25",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "MAUSISI30",
+      "discount": "30%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "MBT25",
+      "discount": "25% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "MBT30",
+      "discount": "30% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "asambeauty",
+      "company": "ASAM Beauty",
+      "code": "SANNETESTET25",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "aylashes",
+      "company": "Ayla Shes",
+      "code": "Denise.20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "baldiniedoardo",
+      "company": "Baldini Edoardo",
+      "code": "CINQUE",
+      "discount": "€10 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "biolab",
+      "company": "BioLab Shop",
+      "code": "BENE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "buah",
+      "company": "Buah",
+      "code": "funkelstein10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "buah",
+      "company": "Buah",
+      "code": "MOMOFTWO10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "buahfruits",
+      "company": "Buah Fruits",
+      "code": "10Melanie",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "bulk",
+      "company": "Bulk",
+      "code": "KELLCY",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "burnhard",
+      "company": "Burnhard",
+      "code": "KATRIN",
+      "discount": "11%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "cabaia",
+      "company": "Cabaia",
+      "code": "ANNAKOG10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "charlottetilbury",
+      "company": "Charlotte Tilbury",
+      "code": "CTNRTRRKDLMPQ9",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "Christine10",
+      "discount": "10% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "Cristina",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "DISI",
+      "discount": "Up to 50%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "MOMOFTWO",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "SARAHMATEU",
+      "discount": "40% + 10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "creamyfabrics",
+      "company": "Creamy Fabrics",
+      "code": "Vanessa123",
+      "discount": "Up to 50%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "cuure",
+      "company": "Cuure",
+      "code": "SARAH4972",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "dalfilo",
+      "company": "Dalfilo",
+      "code": "FRANCESCADALFILO5MM",
+      "discount": "5%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "dannto",
+      "company": "Dannto",
+      "code": "MELITA",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "doctrinus",
+      "company": "Doctrinus",
+      "code": "BENE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "drks",
+      "company": "DRKS",
+      "code": "mama20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "drmassing",
+      "company": "Dr. Massing",
+      "code": "AH2303AF",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "eatfreda",
+      "company": "Eat Freda",
+      "code": "CLEVER",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "edgardcooper",
+      "company": "Edgard Cooper",
+      "code": "CHRISSI20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "estella",
+      "company": "Estella",
+      "code": "DEKOWUT20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "estiagebeauty",
+      "company": "Estiage Beauty",
+      "code": "ESTIAGE10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "everyfoods",
+      "company": "Every Foods",
+      "code": "EVERYSAS",
+      "discount": "25% off first order",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "farfalla",
+      "company": "Farfalla",
+      "code": "farfallathebutterfly26",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "femdisc",
+      "company": "Femdisc",
+      "code": "melanie10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "fitjeans",
+      "company": "Fit Jeans",
+      "code": "NIEN",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gamersonly",
+      "company": "GamersOnly",
+      "code": "Ina15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gigasnutrition",
+      "company": "Gigas Nutrition",
+      "code": "BENE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gotyuunderwear",
+      "company": "Gotyu Underwear",
+      "code": "SARAH73163",
+      "discount": "5%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "huromeurope",
+      "company": "Hurom Europe",
+      "code": "grossstadtfamilie20",
+      "discount": "Up to 44%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "innonature",
+      "company": "Innonature",
+      "code": "healthyhabit25",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "junglck",
+      "company": "Junglück",
+      "code": "mela-10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "katjaseifried",
+      "company": "Katja Seifried",
+      "code": "KTJA10",
+      "discount": "€10 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "katjaseifried",
+      "company": "Katja Seifried",
+      "code": "KTJA20",
+      "discount": "€20 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "koro",
+      "company": "Koro",
+      "code": "BUCHKINDER",
+      "discount": "5%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lechuza",
+      "company": "Lechuza",
+      "code": "ALEXANDERPAAR-15",
+      "discount": "15% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "legalpower",
+      "company": "Legalpower",
+      "code": "KELLCY",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "levelequipment",
+      "company": "Level Equipment",
+      "code": "BENE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lwenanteil",
+      "company": "Löwenanteil",
+      "code": "SANNE",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mainpunkt",
+      "company": "Mainpunkt",
+      "code": "mt22",
+      "discount": "Free shipping",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mairlynd",
+      "company": "Mairlynd",
+      "code": "MAY25",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "maniko",
+      "company": "Maniko",
+      "code": "KATJA10-GSB",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "metaflow",
+      "company": "Metaflow",
+      "code": "Ina10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "metaflow",
+      "company": "Metaflow",
+      "code": "KristinaVanille",
+      "discount": "Free product",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "Aline",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "BIENE",
+      "discount": "20% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "DINA",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "DOMI",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "Gurl",
+      "discount": "20% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "JULE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "KRISI",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "MADLEN",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "MELLI",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "SH",
+      "discount": "20% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mothersearth",
+      "company": "Mothersearth",
+      "code": "MIASPLANET",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "BEAUTYFUL30",
+      "discount": "30% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "BEAUTYFUL35",
+      "discount": "35% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "CRISTINAOHNEH30",
+      "discount": "30%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "CRISTINAOHNEH35",
+      "discount": "35%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "DENISEDISI30",
+      "discount": "30%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybacs",
+      "company": "Mybacs",
+      "code": "DENISEDISI35",
+      "discount": "35%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybraineffect",
+      "company": "Mybraineffect",
+      "code": "CRISTINA-ANGEL20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "mybraineffect",
+      "company": "Mybraineffect",
+      "code": "Melanie20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "myprotein",
+      "company": "MyProtein",
+      "code": "MPKSSL6213",
+      "discount": "44%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "pakamaathletics",
+      "company": "Pakama Athletics",
+      "code": "CHRISSI5€",
+      "discount": "€5 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "plusbrands",
+      "company": "Plus Brands",
+      "code": "INASC60VIP",
+      "discount": "2 months VIP",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "popsewing",
+      "company": "PopSewing",
+      "code": "VALYORK62",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "prozis",
+      "company": "Prozis",
+      "code": "REALNATI",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "purelei",
+      "company": "Purelei",
+      "code": "MELANIEMDAY",
+      "discount": "25%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "rosentalorganics",
+      "company": "Rosental Organics",
+      "code": "KRISTINASPUNKT",
+      "discount": "13%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "rosentalorganics",
+      "company": "Rosental Organics",
+      "code": "MIASPLANET",
+      "discount": "13%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "shein",
+      "company": "Shein",
+      "code": "SDmirim989",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "silksilky",
+      "company": "Silksilky",
+      "code": "KERSTIN",
+      "discount": "12%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sizzlebrothers",
+      "company": "Sizzle Brothers",
+      "code": "Pingu10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "stampfans",
+      "company": "Stamp Fans",
+      "code": "STAMPFANS",
+      "discount": "Free first month",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "stellaobjet",
+      "company": "Stella Objet",
+      "code": "STELLAXJADE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "stylekorean",
+      "company": "Style Korean",
+      "code": "LIZZY1978",
+      "discount": "5%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "stylevana",
+      "company": "Stylevana",
+      "code": "INF105TANYATS",
+      "discount": "10-15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "swyband",
+      "company": "Swyband",
+      "code": "KOSER11",
+      "discount": "11% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "vastsports",
+      "company": "Vast Sports",
+      "code": "Shanice",
+      "discount": "up to 40%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "vetain",
+      "company": "Vetain",
+      "code": "SELINE10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "vivimari",
+      "company": "Vivimari",
+      "code": "EMELIE10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "yesstyle",
+      "company": "YesStyle",
+      "code": "FDAYS2026",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "yesstyle",
+      "company": "YesStyle",
+      "code": "LETI1978",
+      "discount": null,
+      "date": "2026-05-04"
+    },
     {
       "company_id": "aboutyou",
       "company": "About You",
