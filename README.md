@@ -125,6 +125,27 @@ Per-locale scripts (`deploy:be`, `deploy:de`, `deploy:fr`, `deploy:uk`) hard-cod
 
 Wrangler reads `CLOUDFLARE_API_TOKEN` from the environment (and optionally `CLOUDFLARE_ACCOUNT_ID`); on the droplet these come from `/srv/diski/.env.frontend`.
 
+### Droplet deploy (Docker)
+
+The image clones this repo from GitHub at build time. To rebuild with the latest commit:
+
+```bash
+docker build --build-arg CACHE_BUST=$(date +%s) -t diski-frontend .
+```
+
+Run per-country (called from the cron wrapper after the matching pipeline finishes):
+
+```bash
+docker run --rm \
+  --env-file /srv/diski/.env.frontend \
+  -v /srv/diski/output:/data:ro \
+  diski-frontend germany
+```
+
+Country argument: `belgium`, `germany`, `france`, or `uk`. The container script maps that to its locale (`be`/`de`/`fr`/`uk`), reads `/data/<country>/discount_codes_public.json`, builds, and deploys via `npm run deploy:<locale>`.
+
+The container assumes the Pages project's production branch is `main` (so `--branch=main` produces a real production deploy, not a preview).
+
 ## Adding codes / shops
 
 Edit the relevant locale's `data/<locale>/discounts.json` (objects in `discount_codes` with `company_id`, `company`, `code`, `discount`, `date`) and/or `data/<locale>/shops.json` (logo + affiliate URL keyed by `company_id`). Rebuild — that's the whole flow.
