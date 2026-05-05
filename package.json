@@ -5,6 +5,14 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "preview": "node serve.mjs"
+    "preview": "node serve.mjs",
+    "deploy": "wrangler pages deploy",
+    "deploy:be": "wrangler pages deploy dist/be --project-name=int-diski-belgium --branch=main",
+    "deploy:de": "wrangler pages deploy dist/de --project-name=int-diski-germany --branch=main",
+    "deploy:fr": "wrangler pages deploy dist/fr --project-name=int-diski-france --branch=main",
+    "deploy:uk": "wrangler pages deploy dist/uk --project-name=int-diski-uk --branch=main"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
   }
 }

@@ -109,7 +109,21 @@ Run **one project per locale** — current internal URLs follow the `int-diski-<
 | Output dir | `dist/be` | `dist/de` | `dist/fr` | `dist/uk` |
 | Pages project | `int-diski-belgium` | `int-diski-germany` | `int-diski-france` | `int-diski-uk` |
 
-That's it — no framework, no `npm install`.
+The build itself stays zero-runtime-dependency — `node build.mjs` works from a clean clone, no install needed.
+
+### Deploying
+
+Deploys go through `wrangler pages deploy`. Wrangler is the only `devDependency`, fetched on demand:
+
+```bash
+npm install                 # one-time, fetches wrangler
+LOCALE=de node build.mjs    # produce dist/de/
+npm run deploy:de           # → wrangler pages deploy dist/de --project-name=int-diski-germany --branch=main
+```
+
+Per-locale scripts (`deploy:be`, `deploy:de`, `deploy:fr`, `deploy:uk`) hard-code the matching CF Pages project. The generic `npm run deploy -- <dir> --project-name=<name>` form takes args directly.
+
+Wrangler reads `CLOUDFLARE_API_TOKEN` from the environment (and optionally `CLOUDFLARE_ACCOUNT_ID`); on the droplet these come from `/srv/diski/.env.frontend`.
 
 ## Adding codes / shops
 
