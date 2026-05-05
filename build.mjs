@@ -13,11 +13,13 @@ const SITE_NAME = process.env.SITE_NAME || 'Diski';
 const SITE_URLS = {
   be: (process.env.SITE_URL_BE || 'https://example.be').replace(/\/$/, ''),
   de: (process.env.SITE_URL_DE || 'https://example.de').replace(/\/$/, ''),
+  fr: (process.env.SITE_URL_FR || 'https://example.fr').replace(/\/$/, ''),
+  uk: (process.env.SITE_URL_UK || 'https://example.co.uk').replace(/\/$/, ''),
 };
 
 // Maps locale keys (folder/URL slot) to BCP-47 language tags used for Intl
 // formatters and og:locale. Add a new entry here when introducing a locale.
-const OG_LOCALES = { be: 'nl_BE', de: 'de_DE', nl: 'nl_NL' };
+const OG_LOCALES = { be: 'nl_BE', de: 'de_DE', nl: 'nl_NL', fr: 'fr_FR', uk: 'en_GB' };
 
 // ---------------------------------------------------------------------------
 // i18n
@@ -140,6 +142,124 @@ const LOCALES = {
     statCodesLabel: 'aktuelle Codes',
     statTodayUpdated: 'Heute aktualisiert',
     revealMicrocopy: 'Öffnet in diesem Tab · über Partnerlink',
+  },
+  fr: {
+    lang: 'fr-FR',
+    tagline: 'Codes promo récents pour des centaines de boutiques en ligne',
+    homeLead: (n) => `Économisez chez ${n} boutiques en ligne avec des codes vérifiés — sans tracas, sans fausses promos.`,
+    homeMetaDesc: (n) => `Trouvez des codes promo actuels pour ${n}+ boutiques en ligne. Mis à jour quotidiennement et vérifiés à la main.`,
+    btnAllShops: 'Voir toutes les boutiques',
+    sectionFeatured: 'Boutiques sélectionnées',
+    sectionAllLink: 'Voir tout →',
+    sectionLatest: 'Tout récents',
+    navHome: 'Accueil',
+    navShops: 'Toutes les boutiques',
+    breadcrumbHome: 'Accueil',
+    breadcrumbShops: 'Boutiques',
+    breadcrumbAria: 'Fil d’Ariane',
+    alphaAria: 'Alphabétique',
+    allShopsTitle: (siteName) => `Toutes les boutiques en ligne avec codes promo — ${siteName}`,
+    allShopsH1: 'Toutes les boutiques',
+    allShopsLead: (n) => `${n} boutiques avec des codes actuels. Filtrez rapidement ou allez à une lettre.`,
+    allShopsMetaDesc: (n) => `Aperçu de ${n} boutiques en ligne avec des codes promo actuels. Trouvez directement la bonne boutique.`,
+    filterPlaceholder: 'Filtrer les boutiques…',
+    shopTitle: (shop, top, siteName) =>
+      `${shop} code promo${top ? ` — ${top}${/^\d+$/.test(top) ? '%' : ''} de réduction` : ''} | ${siteName}`,
+    shopMetaDesc: (n, shop) =>
+      `${n} code${n === 1 ? '' : 's'} promo actuel${n === 1 ? '' : 's'} pour ${shop}. Mis à jour quotidiennement et vérifié.`,
+    shopH1: (shop) => `${shop} code promo`,
+    shopLead: (n, shop, hasAffiliate) =>
+      `${n} code${n === 1 ? '' : 's'} actuel${n === 1 ? '' : 's'} pour ${shop}.${
+        hasAffiliate
+          ? ' Cliquez sur <em>Afficher le code</em> pour révéler le code — la boutique s’ouvre automatiquement dans cet onglet.'
+          : ''
+      }`,
+    codeAdded: (date) => `Ajouté le ${date}`,
+    discountSuffix: 'de réduction',
+    btnReveal: 'Afficher le code & aller à la boutique',
+    btnCopy: 'Copier',
+    btnCopied: 'Copié !',
+    btnAriaCopy: 'Copier le code',
+    shopMetaH2About: (shop) => `À propos des codes promo ${shop}`,
+    shopMetaAboutBody: (n, shop) =>
+      `Sur cette page, vous trouverez ${n} code${n === 1 ? '' : 's'} promo pour ${shop}. Nous vérifions chaque jour si les codes fonctionnent encore et les trions par date, afin que les plus récents apparaissent en haut. Tous les codes ne fonctionnent pas pour chaque commande — essayez-en plusieurs si le premier ne marche pas.`,
+    shopMetaH2How: (shop) => `Comment utiliser un code ${shop} ?`,
+    shopMetaHowSteps: (shop, hasAffiliate) => [
+      `Choisissez un code ci-dessus${
+        hasAffiliate ? ' et cliquez sur <em>Afficher le code</em> ; la boutique s’ouvre dans cet onglet.' : ' et copiez-le.'
+      }`,
+      `Remplissez votre panier sur ${shop}.`,
+      'Collez le code dans le champ promo lors du paiement.',
+    ],
+    footerText: (year, siteName) =>
+      `© ${year} ${siteName}. Les codes sont fournis par des tiers ; le fonctionnement n’est pas garanti.`,
+    cardCount: (n) => `${n} code${n === 1 ? '' : 's'}`,
+    cardDiscount: (top) => `jusqu’à ${top} de réduction`,
+    badge: 'promo',
+    schemaCodes: 'codes promo',
+    statShopsLabel: 'boutiques',
+    statCodesLabel: 'codes actuels',
+    statTodayUpdated: 'Mis à jour aujourd’hui',
+    revealMicrocopy: 'Ouvre dans cet onglet · via lien partenaire',
+  },
+  uk: {
+    lang: 'en-GB',
+    tagline: 'Fresh discount codes for hundreds of online shops',
+    homeLead: (n) => `Save at ${n} online shops with verified codes — no hassle, no fake discounts.`,
+    homeMetaDesc: (n) => `Find current discount codes for ${n}+ online shops. Updated daily and hand-checked.`,
+    btnAllShops: 'View all shops',
+    sectionFeatured: 'Featured shops',
+    sectionAllLink: 'View all →',
+    sectionLatest: 'Just in',
+    navHome: 'Home',
+    navShops: 'All shops',
+    breadcrumbHome: 'Home',
+    breadcrumbShops: 'Shops',
+    breadcrumbAria: 'Breadcrumb',
+    alphaAria: 'Alphabetical',
+    allShopsTitle: (siteName) => `All online shops with discount codes — ${siteName}`,
+    allShopsH1: 'All shops',
+    allShopsLead: (n) => `${n} shops with current codes. Filter quickly or jump to a letter.`,
+    allShopsMetaDesc: (n) => `Overview of ${n} online shops with current discount codes. Find the right shop directly.`,
+    filterPlaceholder: 'Filter shops…',
+    shopTitle: (shop, top, siteName) =>
+      `${shop} discount code${top ? ` — ${top}${/^\d+$/.test(top) ? '%' : ''} off` : ''} | ${siteName}`,
+    shopMetaDesc: (n, shop) =>
+      `${n} current discount code${n === 1 ? '' : 's'} for ${shop}. Updated daily and checked.`,
+    shopH1: (shop) => `${shop} discount code`,
+    shopLead: (n, shop, hasAffiliate) =>
+      `${n} current code${n === 1 ? '' : 's'} for ${shop}.${
+        hasAffiliate
+          ? ' Click <em>Show code</em> to reveal the code — the shop opens automatically in this tab.'
+          : ''
+      }`,
+    codeAdded: (date) => `Added ${date}`,
+    discountSuffix: 'off',
+    btnReveal: 'Show code & go to shop',
+    btnCopy: 'Copy',
+    btnCopied: 'Copied!',
+    btnAriaCopy: 'Copy code',
+    shopMetaH2About: (shop) => `About ${shop} discount codes`,
+    shopMetaAboutBody: (n, shop) =>
+      `On this page you’ll find ${n} discount code${n === 1 ? '' : 's'} for ${shop}. We check every day whether the codes still work and sort by date, so the most recent ones appear at the top. Not every code works for every order — try several if the first one doesn’t.`,
+    shopMetaH2How: (shop) => `How do you use a ${shop} code?`,
+    shopMetaHowSteps: (shop, hasAffiliate) => [
+      `Pick a code above${
+        hasAffiliate ? ' and click <em>Show code</em>; the shop opens in this tab.' : ' and copy it.'
+      }`,
+      `Fill your basket at ${shop}.`,
+      'Paste the code into the discount field at checkout.',
+    ],
+    footerText: (year, siteName) =>
+      `© ${year} ${siteName}. Codes are submitted by third parties; functionality not guaranteed.`,
+    cardCount: (n) => `${n} ${n === 1 ? 'code' : 'codes'}`,
+    cardDiscount: (top) => `up to ${top} off`,
+    badge: 'deal',
+    schemaCodes: 'discount codes',
+    statShopsLabel: 'shops',
+    statCodesLabel: 'current codes',
+    statTodayUpdated: 'Updated today',
+    revealMicrocopy: 'Opens in this tab · via partner link',
   },
 };
 

@@ -2,24 +2,23 @@
 
 Static discount-code site, generated from per-locale `discounts.json` + `shops.json` files.
 
-Two locales ship today: **BE** (Belgian / Flemish market, `nl-BE`) and **DE** (German market). Each builds to its own folder and is intended to be deployed as a separate Cloudflare Pages project (one per country domain). A separate **NL** locale slot is reserved for a future Netherlands-specific site.
+Four locales ship today: **BE** (Belgian / Flemish market, `nl-BE`), **DE** (German), **FR** (French), and **UK** (British English). Each builds to its own folder and is intended to be deployed as a separate Cloudflare Pages project (one per country domain). A separate **NL** locale slot is reserved for a future Netherlands-specific site.
 
 ## Project layout
 
 ```
 data/
-  be/
+  be/                    ← Belgium / Flemish (nl-BE)
     discounts.json
     shops.json           ← per-shop metadata (logo, affiliate URL)
-  de/
-    discounts.json
-    shops.json
+  de/                    ← Germany (de-DE)
+  fr/                    ← France (fr-FR)
+  uk/                    ← United Kingdom (en-GB)
 public/                  ← shared static assets (style.css, reveal.js)
 build.mjs                ← generator (zero deps)
 serve.mjs                ← local preview
 dist/
-  be/                    ← built BE site
-  de/                    ← built DE site
+  be/  de/  fr/  uk/     ← built per-locale sites
 ```
 
 The homepage shows two sections:
@@ -83,7 +82,9 @@ LOCALE=de node serve.mjs
 | `SITE_NAME` | Shown in header, footer, OG tags | `Diski` |
 | `SITE_URL_BE` | Canonical / sitemap / hreflang for BE | `https://example.be` |
 | `SITE_URL_DE` | Canonical / sitemap / hreflang for DE | `https://example.de` |
-| `LOCALE` | If set, builds only that locale | unset (builds both) |
+| `SITE_URL_FR` | Canonical / sitemap / hreflang for FR | `https://example.fr` |
+| `SITE_URL_UK` | Canonical / sitemap / hreflang for UK | `https://example.co.uk` |
+| `LOCALE` | If set, builds only that locale | unset (builds all) |
 | `DATA_FILE` | Override path to discounts JSON (requires `LOCALE`) | unset (uses `data/<locale>/discounts.json`) |
 
 Example:
