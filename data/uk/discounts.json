@@ -1,4 +1,369 @@
 {
-  "generated_at": null,
-  "discount_codes": []
+  "generated_at": "2026-05-04T01:05:45+00:00",
+  "discount_codes": [
+    {
+      "company_id": "aybl",
+      "company": "Aybl",
+      "code": "MARY",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "ayblmen",
+      "company": "AYBL Men",
+      "code": "AM10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "baileyandcoco",
+      "company": "Bailey and Coco UK",
+      "code": "RODNEYMABEL25",
+      "discount": "25% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "bellamianta",
+      "company": "Bellamianta",
+      "code": "PAMELA15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "boohoo",
+      "company": "Boohoo",
+      "code": "MILLIEJANERRI",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "capyera",
+      "company": "Capyera",
+      "code": "SARAH15",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "carshades",
+      "company": "Car Shades",
+      "code": "FAMILYFUN10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "dfyne",
+      "company": "Dfyne",
+      "code": "AIMSGAINS",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "earthlysheets",
+      "company": "Earthly Sheets",
+      "code": "JO10",
+      "discount": "10% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "freesoul",
+      "company": "Freesoul",
+      "code": "MOLLIEG",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "goboony",
+      "company": "GoBoo​ny",
+      "code": "GRACE",
+      "discount": "£35 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gornation",
+      "company": "GOR Nation",
+      "code": "FITMITMARIE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "ANNAO10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "MOLLIEG10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "SAMB10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "SUBS10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "heliocare",
+      "company": "Heliocare",
+      "code": "SHOP352",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "hunterandgather",
+      "company": "Hunter & Gather",
+      "code": "ANNIE",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "iherb",
+      "company": "iHerb",
+      "code": "YAYA",
+      "discount": "20-25% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFANDRADA",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFDAYNA",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFMARINAO",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFNAOMIM",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFRHIAB",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lookfantastic",
+      "company": "Lookfantastic",
+      "code": "LFTFYOLANDI",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "manamouboutique",
+      "company": "Manamou Boutique",
+      "code": "MLL10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "musclenation",
+      "company": "Muscle Nation",
+      "code": "HAYLEY10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "networldsports",
+      "company": "Networld Sports",
+      "code": "J20",
+      "discount": "15% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "newbalance",
+      "company": "New Balance",
+      "code": "FF20",
+      "discount": "20% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "oneractive",
+      "company": "Oneractive",
+      "code": "Anely",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "oneractive",
+      "company": "Oneractive",
+      "code": "CAITLIN",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "oneractive",
+      "company": "Oneractive",
+      "code": "EMONI",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "oneractive",
+      "company": "Oneractive",
+      "code": "Kelli",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "onerative",
+      "company": "Onerative",
+      "code": "HAYLEY",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "pendlesportswear",
+      "company": "Pendle Sportswear",
+      "code": "J20",
+      "discount": "10% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "proteinworks",
+      "company": "Protein Works",
+      "code": "TAMSYN",
+      "discount": "15% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sajewellness",
+      "company": "Saje Wellness",
+      "code": "DANYELE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sephora",
+      "company": "Sephora",
+      "code": "ChloeSephora",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sephora",
+      "company": "Sephora",
+      "code": "DAYNASPH",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sephorauk",
+      "company": "Sephorauk",
+      "code": "NAOMIMSPH",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "te",
+      "company": "Teò",
+      "code": "JADE30",
+      "discount": "30%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "theadorablepooch",
+      "company": "The Adorable Pooch Co",
+      "code": "TONKA15",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "thebodminjailhotel",
+      "company": "The Bodmin Jail Hotel",
+      "code": "LUNAANDWILLIS5",
+      "discount": "5% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "tripdrinks",
+      "company": "Trip Drinks",
+      "code": "MOLLYMAYWREN",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "uklash",
+      "company": "Uklash",
+      "code": "GEORGIA",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "ultrasun",
+      "company": "Ultrasun",
+      "code": "MUAFREYJA",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "wild",
+      "company": "Wild",
+      "code": "FOXXIE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "wild",
+      "company": "Wild",
+      "code": "FOXXIE20",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "wild",
+      "company": "Wild",
+      "code": "NATASHASHOPWD",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "womensbest",
+      "company": "Women's Best",
+      "code": "ELLENAFIT",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "womensbest",
+      "company": "Women's Best",
+      "code": "MONGEY",
+      "discount": "10% off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "ziipbeauty",
+      "company": "Ziip Beauty",
+      "code": "40PLUS",
+      "discount": "10% off",
+      "date": "2026-05-04"
+    }
+  ]
 }

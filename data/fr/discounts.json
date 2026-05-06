@@ -1,4 +1,194 @@
 {
-  "generated_at": null,
-  "discount_codes": []
+  "generated_at": "2026-05-04T01:20:42+00:00",
+  "discount_codes": [
+    {
+      "company_id": "mylky",
+      "company": "Mylky",
+      "code": "VANESSACHAPUZOT10",
+      "discount": "€10 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "SALOME10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "BOURR10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "prozis",
+      "company": "Prozis",
+      "code": "BOURR",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "valebio",
+      "company": "Valebio",
+      "code": "MARIONBP10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "ziipbeauty",
+      "company": "Ziip Beauty",
+      "code": "40PLUS",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "a7europe",
+      "company": "A7Europe",
+      "code": "9h29",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "esn",
+      "company": "ESN",
+      "code": "9h29",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "avancuseurope",
+      "company": "Avancus Europe",
+      "code": "9h29",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "myanalia",
+      "company": "Myanalia",
+      "code": "FANNY15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "glarry",
+      "company": "Glarry",
+      "code": "26CP7",
+      "discount": "7%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "TWINS10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "myprotein",
+      "company": "MyProtein",
+      "code": "THOMASR",
+      "discount": "42%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "morenutrition",
+      "company": "More Nutrition",
+      "code": "IMENE",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "yesstyle",
+      "company": "YesStyle",
+      "code": "FDAYS2026",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "yesstyle",
+      "company": "YesStyle",
+      "code": "SYRIENNE78",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "craftinemercerie",
+      "company": "Craftine Mercerie",
+      "code": "AFF186213",
+      "discount": "€5 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gymshark",
+      "company": "Gymshark",
+      "code": "KEN10",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "yesstyle",
+      "company": "YesStyle",
+      "code": "SKBTYGENIE1",
+      "discount": null,
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "lalousitayeb",
+      "company": "Lalou Sitayeb",
+      "code": "INSTA30",
+      "discount": "€30 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "halara",
+      "company": "Halara",
+      "code": "delph04",
+      "discount": "€10 off",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "halara",
+      "company": "Halara",
+      "code": "delph03",
+      "discount": "20%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "sisilapaillette",
+      "company": "Sisi La Paillette",
+      "code": "INDY10",
+      "discount": "10%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "jollymama",
+      "company": "Jolly Mama France",
+      "code": "MATHILDE15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "gaminetgamine",
+      "company": "Gamin et Gamine",
+      "code": "15MARION4BP",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "scrapcooking",
+      "company": "Scrapcooking",
+      "code": "MARION15",
+      "discount": "15%",
+      "date": "2026-05-04"
+    },
+    {
+      "company_id": "scrapcooking",
+      "company": "Scrapcooking",
+      "code": "FRENCH26",
+      "discount": "15%",
+      "date": "2026-05-04"
+    }
+  ]
 }
